@@ -2254,104 +2254,6 @@ body.menu-open{
 HEADER RESPONSIVO (1200px até 1100px)
 ===================================================== */
 
-@media (max-width: 1250px){
-
-    .header .container{
-        gap:20px;
-    }
-
-    .navbar{
-        flex:1;
-        margin-left:20px;
-    }
-
-    .navbar ul{
-        justify-content:center;
-        gap:22px;
-    }
-
-    .navbar a{
-        font-size:.90rem;
-    }
-
-    .header-actions .btn{
-        padding-inline:22px;
-        min-height:48px;
-        font-size:.90rem;
-    }
-
-    .logo img{
-        height:48px;
-    }
-
-        .navbar{
-        display:none;
-    }
-
-    .menu-toggle{
-        display:flex;
-    }
-
-}
-
-@media (max-width:1100px){
-
-    .services-grid,
-    .differentials-grid,
-    .testimonials-grid{
-        grid-template-columns:repeat(2,1fr);
-    }
-
-    .payment-grid{
-        grid-template-columns:repeat(3,1fr);
-    }
-
-    .footer-grid{
-        grid-template-columns:repeat(2,1fr);
-    }
-}
-
-@media (max-width:768px){
-
-    .about-grid,
-    .area-grid,
-    .coverage-grid{
-        grid-template-columns:1fr;
-    }
-
-    .services-grid,
-    .differentials-grid,
-    .payment-grid,
-    .testimonials-grid,
-    .city-list{
-        grid-template-columns:1fr;
-    }
-
-    .timeline::before{
-        left:24px;
-    }
-
-    .timeline-number{
-        width:50px;
-        height:50px;
-        font-size:1rem;
-    }
-
-    .timeline-item{
-        padding-left:80px;
-    }
-
-    .cta-actions{
-        flex-direction:column;
-    }
-
-    .footer-grid{
-        grid-template-columns:1fr;
-        gap:40px;
-    }
-
-}
-
 /* ===================================================================
    27. MICROINTERAÇÕES E REFINAMENTOS
 =================================================================== */
@@ -2837,343 +2739,17 @@ img{
 
 }
 
-
-/* ===================================================================
-   RESPONSIVIDADE
-=================================================================== */
-
-@media (max-width:1200px){
-
-    .trust-list{
-
-        grid-template-columns:repeat(2,1fr);
-
-    }
-
-    .trust-list li:nth-child(2){
-
-        border-right:none;
-
-    }
-
-    .hero{
-
-        padding-bottom:180px;
-
-    }
-
-}
-
-@media (max-width:992px){
-
-
-    .whatsapp-float{
-
-        width:64px;
-
-        height:64px;
-
-    }
-    
-    .hero{
-
-        text-align:center;
-
-        padding-top: 100px;
-
-    }
-
-    .hero-content{
-
-        margin-inline:auto;
-
-        align-items:center;
-
-    }
-
-    .hero-list{
-
-        grid-template-columns:1fr;
-
-        width:100%;
-
-    }
-
-    .hero-buttons{
-
-        justify-content:center;
-
-    }
-
-    .hero-info{
-
-        justify-content:center;
-
-    }
-
-}
-
-@media (max-width:768px){
-
-    .hero{
-
-        min-height:auto;
-
-        padding-top:120px;
-
-        padding-bottom:220px;
-
-    }
-
-    .hero p{
-
-        font-size:1rem;
-
-    }
-
-    .hero-buttons{
-
-        width:100%;
-
-    }
-
-    .hero-buttons .btn{
-
-        width:100%;
-
-        min-width:100%;
-
-    }
-
-    .hero-trust{
-
-        width:calc(100% - 32px);
-
-    }
-
-    .trust-list{
-
-        grid-template-columns:1fr;
-
-    }
-
-    .trust-list li{
-
-        border-right:none;
-
-        border-bottom:1px solid var(--color-gray-200);
-
-    }
-
-    .trust-list li:last-child{
-
-        border-bottom:none;
-
-    }
-
-}
-
-@media (max-width:576px){
-
-    .hero-badge{
-
-        font-size:.78rem;
-
-        padding:10px 18px;
-
-    }
-
-    .hero-scroll{
-
-        display:none;
-
-    }
-
-}
-
 /* ===================================================================
    40. RESPONSIVIDADE EXTRA
 =================================================================== */
 
-@media(max-width:768px){
-
-    .back-to-top{
-
-        right:20px;
-
-        bottom:100px;
-
-    }
-
-    .whatsapp-float{
-
-        right:20px;
-
-        bottom:20px;
-
-    }
-
-}
-
-@media(max-width:480px){
-
-    .section-header::after{
-
-        width:50px;
-
-    }
-
-}
-
-
-
 /* ===================================================================
    RESPONSIVIDADE
 =================================================================== */
 
-@media (max-width:1100px){
-
-    .navbar{
-
-        display:none;
-
-    }
-
-    .menu-toggle{
-
-        display:flex;
-
-    }
-
-}
-
-@media (max-width:768px){
-
-    .header{
-
-        height:78px;
-
-    }
-
-    .header.scrolled{
-
-        height:68px;
-
-    }
-
-    .logo img{
-
-        height:44px;
-
-    }
-
-    .header-actions .btn{
-
-        display:none;
-
-    }
-
-}
-
-@media (max-width:480px){
-
-    .header .container{
-
-        gap:16px;
-
-    }
-
-    .logo img{
-
-        height:40px;
-
-    }
-
-}
-
-
 /* ===================================================================
    14. RESPONSIVIDADE BASE
 =================================================================== */
-
-@media (max-width:1200px){
-
-    .grid-4{
-
-        grid-template-columns:repeat(2,1fr);
-
-    }
-
-}
-
-@media (max-width:992px){
-
-    .section{
-
-        padding:90px 0;
-
-    }
-
-    .grid-2,
-    .grid-3{
-
-        grid-template-columns:1fr;
-
-    }
-
-}
-
-@media (max-width:768px){
-
-    .container{
-
-        width:min(100% - 32px,var(--container));
-
-    }
-
-    h1{
-
-        font-size:2.6rem;
-
-    }
-
-    h2{
-
-        font-size:2rem;
-
-    }
-
-    .section-header{
-
-        margin-bottom:50px;
-
-    }
-
-    .btn{
-
-        width:100%;
-
-    }
-
-}
-
-
-
-@media (max-width:576px){
-
-    .grid-4{
-
-        grid-template-columns:1fr;
-
-    }
-
-    .section{
-
-        padding:70px 0;
-
-    }
-
-}
 
 /* ===================================================================
    29. GUINCHO INTERATIVO (QUEM SOMOS)
@@ -3406,29 +2982,6 @@ img{
 
 }
 
-@media (max-width:576px){
-
-    .tow-rig{
-
-        width:190px;
-
-    }
-
-    .tow-truck-hint{
-
-        display:none;
-
-    }
-
-    .about-image-media,
-    .about-image-media img{
-
-        min-height:220px;
-
-    }
-
-}
-
 @media (prefers-reduced-motion:reduce){
 
     .tow-truck-trigger::before{
@@ -3559,22 +3112,6 @@ img{
 
 }
 
-@media (max-width:992px){
-
-    .hero-container{
-
-        grid-template-columns:1fr;
-
-    }
-
-    .hero-image{
-
-        display:none;
-
-    }
-
-}
-
 
 /* ===================================================================
    31. MELHORIAS DE DESIGN — INDICADORES (barra flutuante)
@@ -3657,64 +3194,6 @@ img{
 
 }
 
-@media (max-width:992px){
-
-    .highlights{
-
-        margin-top:-48px;
-
-    }
-
-    .highlights-grid{
-
-        grid-template-columns:repeat(2,1fr);
-
-    }
-
-    .highlight-card{
-
-        border-right:none !important;
-
-    }
-
-    .highlight-card:nth-child(1),
-    .highlight-card:nth-child(2){
-
-        border-bottom:1px solid var(--color-gray-200);
-
-    }
-
-}
-
-@media (max-width:576px){
-
-    .highlights{
-
-        margin-top:-32px;
-
-    }
-
-    .highlights-grid{
-
-        grid-template-columns:1fr;
-
-    }
-
-    .highlight-card:nth-child(1),
-    .highlight-card:nth-child(2){
-
-        border-bottom:none;
-
-    }
-
-    .highlight-card:not(:last-child){
-
-        border-bottom:1px solid var(--color-gray-200);
-
-    }
-
-}
-
 
 /* ===================================================================
    32. MELHORIAS DE DESIGN — COMO FUNCIONA (linha do tempo)
@@ -3785,33 +3264,6 @@ img{
     color:var(--color-gray-500);
 
 }
-
-@media (max-width:768px){
-
-    .process-timeline::before{
-
-        left:26px;
-
-    }
-
-    .process-step{
-
-        padding-left:78px;
-        margin-bottom:36px;
-
-    }
-
-    .step-number{
-
-        width:52px;
-        height:52px;
-        font-size:1rem;
-        border-width:4px;
-
-    }
-
-}
-
 
 /* ===================================================================
    33. MELHORIAS DE DESIGN — ÁREA DE ATENDIMENTO
@@ -4408,5 +3860,381 @@ strong{
     width:100%;
 
     height:100%;
+
+}
+
+
+/* ===================================================================
+   RESPONSIVIDADE
+=================================================================== */
+/* ===========================
+   1250px
+=========================== */
+
+@media (max-width:1250px){
+
+    .header .container{
+        gap:20px;
+    }
+
+    .navbar{
+        display:none;
+        flex:1;
+        margin-left:20px;
+    }
+
+    .navbar ul{
+        justify-content:center;
+        gap:22px;
+    }
+
+    .navbar a{
+        font-size:.90rem;
+    }
+
+    .menu-toggle{
+        display:flex;
+    }
+
+    .header-actions .btn{
+        padding-inline:22px;
+        min-height:48px;
+        font-size:.90rem;
+    }
+
+    .logo img{
+        height:48px;
+    }
+
+}
+
+/* ===========================
+   1200px
+=========================== */
+
+@media (max-width:1200px){
+
+    .trust-list{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .trust-list li:nth-child(2){
+        border-right:none;
+    }
+
+    .hero{
+        padding-bottom:180px;
+    }
+
+    .grid-4{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+}
+
+/* ===========================
+   1100px
+=========================== */
+
+@media (max-width:1100px){
+
+    .services-grid,
+    .differentials-grid,
+    .testimonials-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .payment-grid{
+        grid-template-columns:repeat(3,1fr);
+    }
+
+    .footer-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+}
+
+/* ===========================
+   992px
+=========================== */
+
+@media (max-width:992px){
+
+    .section{
+        padding:90px 0;
+    }
+
+    .grid-2,
+    .grid-3,
+    .hero-container{
+        grid-template-columns:1fr;
+    }
+
+    .hero-image{
+        display:none;
+    }
+
+    .hero{
+        text-align:center;
+        padding-top:100px;
+    }
+
+    .hero-content{
+        margin-inline:auto;
+        align-items:center;
+    }
+
+    .hero-list{
+        grid-template-columns:1fr;
+        width:100%;
+    }
+
+    .hero-buttons,
+    .hero-info{
+        justify-content:center;
+    }
+
+    .whatsapp-float{
+        width:64px;
+        height:64px;
+    }
+
+    .highlights{
+        margin-top:-48px;
+    }
+
+    .highlights-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .highlight-card{
+        border-right:none!important;
+    }
+
+    .highlight-card:nth-child(1),
+    .highlight-card:nth-child(2){
+        border-bottom:1px solid var(--color-gray-200);
+    }
+
+}
+
+/* ===========================
+   780px
+=========================== */
+
+@media (max-width:780px){
+
+    .coverage-grid{
+
+        display:grid;
+        grid-template-columns:1fr;
+        gap:40px;
+
+    }
+
+    .coverage-content{
+
+        order:1;
+
+    }
+
+    .coverage-map{
+
+        order:2;
+        width:100%;
+        height:420px;
+
+    }
+
+    #map{
+
+        width:100%;
+        height:100%;
+
+    }
+
+}
+/* ===========================
+   768px
+=========================== */
+
+@media (max-width:768px){
+
+    .container{
+        width:min(100% - 32px,var(--container));
+    }
+
+    .header{
+        height:78px;
+    }
+
+    .header.scrolled{
+        height:68px;
+    }
+
+    .logo img{
+        height:44px;
+    }
+
+    .header-actions .btn{
+        display:none;
+    }
+
+    h1{
+        font-size:2.6rem;
+    }
+
+    h2{
+        font-size:2rem;
+    }
+
+    .section-header{
+        margin-bottom:50px;
+    }
+
+    .btn{
+        width:100%;
+    }
+
+    .hero{
+        min-height:auto;
+        padding-top:120px;
+        padding-bottom:220px;
+    }
+
+    .hero p{
+        font-size:1rem;
+    }
+
+    .hero-buttons{
+        width:100%;
+    }
+
+    .hero-buttons .btn{
+        width:100%;
+        min-width:100%;
+    }
+
+    .hero-trust{
+        width:calc(100% - 32px);
+    }
+
+    .trust-list{
+        grid-template-columns:1fr;
+    }
+
+    .trust-list li{
+        border-right:none;
+        border-bottom:1px solid var(--color-gray-200);
+    }
+
+    .trust-list li:last-child{
+        border-bottom:none;
+    }
+
+    .back-to-top{
+        right:20px;
+        bottom:100px;
+    }
+
+    .whatsapp-float{
+        right:20px;
+        bottom:20px;
+    }
+
+    .process-timeline::before{
+        left:26px;
+    }
+
+    .process-step{
+        padding-left:78px;
+        margin-bottom:36px;
+    }
+
+    .step-number{
+        width:52px;
+        height:52px;
+        font-size:1rem;
+        border-width:4px;
+    }
+
+}
+
+/* ===========================
+   576px
+=========================== */
+
+@media (max-width:576px){
+
+    .hero-badge{
+        font-size:.78rem;
+        padding:10px 18px;
+    }
+
+    .hero-scroll{
+        display:none;
+    }
+
+    .grid-4{
+        grid-template-columns:1fr;
+    }
+
+    .section{
+        padding:70px 0;
+    }
+
+    .tow-rig{
+        width:190px;
+    }
+
+    .tow-truck-hint{
+        display:none;
+    }
+
+    .about-image-media,
+    .about-image-media img{
+        min-height:220px;
+    }
+
+    .highlights{
+        margin-top:-32px;
+    }
+
+    .highlights-grid{
+        grid-template-columns:1fr;
+    }
+
+    .highlight-card:nth-child(1),
+    .highlight-card:nth-child(2){
+        border-bottom:none;
+    }
+
+    .highlight-card:not(:last-child){
+        border-bottom:1px solid var(--color-gray-200);
+    }
+
+}
+
+/* ===========================
+   480px
+=========================== */
+
+@media (max-width:480px){
+
+    .header .container{
+        gap:16px;
+    }
+
+    .logo img{
+        height:40px;
+    }
+
+    .section-header::after{
+        width:50px;
+    }
+
+    .coverage-map{
+        height:320px;
+    }
 
 }
