@@ -733,6 +733,199 @@ function erro(){
 }
 
 /* ==========================================================
+   SLIDER "QUEM SOMOS"
+========================================================== */
+
+(function initAboutSlider(){
+
+    const slider = document.getElementById("aboutSlider");
+
+    if(!slider) return;
+
+    const track = slider.querySelector(".about-slider-track");
+    const slides = [...slider.querySelectorAll(".about-slide")];
+    const prevBtn = document.getElementById("aboutSliderPrev");
+    const nextBtn = document.getElementById("aboutSliderNext");
+    const dotsWrap = document.getElementById("aboutSliderDots");
+
+    if(!track || slides.length === 0) return;
+
+    let current = 0;
+
+    let autoplayTimer = null;
+
+    let resumeTimer = null;
+
+    const AUTOPLAY_DELAY = 5000;
+
+    const RESUME_DELAY = 10000;
+
+    /* Cria os dots dinamicamente */
+
+    slides.forEach((_, index)=>{
+
+        const dot = document.createElement("button");
+
+        dot.type = "button";
+
+        dot.setAttribute("aria-label", `Ir para imagem ${index + 1}`);
+
+        if(index === 0) dot.classList.add("active");
+
+        dot.addEventListener("click", ()=>{
+
+            goToSlide(index);
+
+            handleManualInteraction();
+
+        });
+
+        dotsWrap?.appendChild(dot);
+
+    });
+
+    const dots = dotsWrap ? [...dotsWrap.children] : [];
+
+    function update(){
+
+        track.style.transform = `translateX(-${current * 100}%)`;
+
+        slides.forEach((slide, index)=>{
+
+            slide.classList.toggle("active", index === current);
+
+        });
+
+        dots.forEach((dot, index)=>{
+
+            dot.classList.toggle("active", index === current);
+
+        });
+
+    }
+
+    function goToSlide(index){
+
+        current = (index + slides.length) % slides.length;
+
+        update();
+
+    }
+
+    function nextSlide(){
+
+        goToSlide(current + 1);
+
+    }
+
+    function prevSlide(){
+
+        goToSlide(current - 1);
+
+    }
+
+    function startAutoplay(){
+
+        stopAutoplay();
+
+        autoplayTimer = setInterval(nextSlide, AUTOPLAY_DELAY);
+
+    }
+
+    function stopAutoplay(){
+
+        if(autoplayTimer){
+
+            clearInterval(autoplayTimer);
+
+            autoplayTimer = null;
+
+        }
+
+    }
+
+    /* Ao clicar manualmente: para o autoplay e agenda retomada em 10s */
+
+    function handleManualInteraction(){
+
+        stopAutoplay();
+
+        if(resumeTimer){
+
+            clearTimeout(resumeTimer);
+
+        }
+
+        resumeTimer = setTimeout(()=>{
+
+            startAutoplay();
+
+        }, RESUME_DELAY);
+
+    }
+
+    nextBtn?.addEventListener("click", ()=>{
+
+        nextSlide();
+
+        handleManualInteraction();
+
+    });
+
+    prevBtn?.addEventListener("click", ()=>{
+
+        prevSlide();
+
+        handleManualInteraction();
+
+    });
+
+    /* Swipe em telas touch */
+
+    let touchStartX = 0;
+
+    let touchEndX = 0;
+
+    slider.addEventListener("touchstart", event=>{
+
+        touchStartX = event.changedTouches[0].screenX;
+
+    }, {passive:true});
+
+    slider.addEventListener("touchend", event=>{
+
+        touchEndX = event.changedTouches[0].screenX;
+
+        const diff = touchStartX - touchEndX;
+
+        if(Math.abs(diff) > 40){
+
+            if(diff > 0){
+
+                nextSlide();
+
+            }
+
+            else{
+
+                prevSlide();
+
+            }
+
+            handleManualInteraction();
+
+        }
+
+    }, {passive:true});
+
+    update();
+
+    startAutoplay();
+
+})();
+
+
+/* ==========================================================
    DEBUG
 ========================================================== */
 

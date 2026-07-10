@@ -2325,12 +2325,6 @@ img{
 
 }
 
-.about-image-media:hover img{
-
-    transform:scale(1.05);
-
-}
-
 .about-image-media img{
 
     min-height:340px;
@@ -3863,6 +3857,106 @@ strong{
 
 }
 
+.about-slider{
+    position:relative;
+}
+
+.about-slider-track{
+    display:flex;
+    width:100%;
+    height:100%;
+    min-height:340px;
+    transition:transform .6s cubic-bezier(.65,0,.35,1);
+}
+
+.about-slide{
+    flex:0 0 100%;
+    min-height:340px;
+    position:relative;
+}
+
+.about-slide img{
+    width:100%;
+    height:100%;
+    min-height:340px;
+    display:block;
+    object-fit:cover;
+}
+
+.about-slider-arrow{
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    border:none;
+    background:rgba(255,255,255,.85);
+    color:#1a1a1a;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    z-index:3;
+    box-shadow:0 4px 14px rgba(0,0,0,.18);
+    transition:background .25s ease, transform .25s ease;
+}
+
+.about-slider-arrow svg{
+    width:20px;
+    height:20px;
+}
+
+.about-slider-arrow:hover{
+    background:#fff;
+    transform:translateY(-50%) scale(1.06);
+}
+
+.about-slider-arrow.prev{ left:16px; }
+.about-slider-arrow.next{ right:16px; }
+
+.about-slider-dots{
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:16px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    z-index:3;
+}
+
+.about-slider-dots button{
+    width:9px;
+    height:9px;
+    border-radius:50%;
+    border:none;
+    padding:0;
+    background:rgba(255,255,255,.55);
+    cursor:pointer;
+    transition:background .25s ease, transform .25s ease;
+}
+
+.about-slider-dots button.active{
+    background:#fff;
+    transform:scale(1.25);
+}
+
+/* Responsivo (dentro do seu media query mobile já existente) */
+@media (max-width:768px){
+    .about-slider-track,
+    .about-slide,
+    .about-slide img{
+        min-height:220px;
+    }
+    .about-slider-arrow{
+        width:36px;
+        height:36px;
+    }
+    .about-slider-arrow.prev{ left:10px; }
+    .about-slider-arrow.next{ right:10px; }
+}
 
 /* ===================================================================
    RESPONSIVIDADE
@@ -4014,6 +4108,53 @@ strong{
     .highlight-card:nth-child(1),
     .highlight-card:nth-child(2){
         border-bottom:1px solid var(--color-gray-200);
+    }
+
+    .about-grid{
+        grid-template-columns:1fr;
+        gap:40px;
+        align-items:start;
+    }
+
+    .about-image{
+        order:1;
+        width:100%;
+    }
+
+    .about-content{
+        order:2;
+        text-align:center;
+    }
+
+    .about-content h2{
+        max-width:700px;
+        margin:0 auto 24px;
+    }
+
+    .about-content p{
+        max-width:700px;
+        margin:0 auto 20px;
+    }
+
+    .about-list{
+        max-width:600px;
+        margin:32px auto;
+    }
+
+    .about-list li{
+        justify-content:flex-start;
+    }
+
+    .about-content .btn{
+        margin:auto;
+    }
+
+    .about-image-media{
+        min-height:420px;
+    }
+
+    .about-image-media img{
+        min-height:420px;
     }
 
 }
@@ -4194,6 +4335,27 @@ strong{
     .about-image-media,
     .about-image-media img{
         min-height:220px;
+    }
+    
+    .about-grid{
+        gap:30px;
+    }
+
+    .about-image-media{
+        min-height:260px;
+    }
+
+    .about-image-media img{
+        min-height:260px;
+    }
+
+    .about-slider-arrow{
+        width:42px;
+        height:42px;
+    }
+
+    .about-slider-dots{
+        bottom:16px;
     }
 
     .highlights{
