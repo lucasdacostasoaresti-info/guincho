@@ -965,7 +965,58 @@ function erro(){
 
 
 /* ==========================================================
-   DEBUG
+   FORMULÁRIO DE CONTATO (página contato.html)
+
+   O site é 100% estático (sem servidor), então não há como
+   enviar um e-mail de verdade a partir daqui. Para não deixar
+   o formulário "morto", ele monta a mensagem digitada pela
+   pessoa e abre o WhatsApp da empresa já com o texto pronto —
+   o mesmo número usado no resto do site.
 ========================================================== */
 
-// console.log("Fabinho Guinchos carregado.");
+(function initContactForm(){
+
+    const form = document.getElementById("contactForm");
+
+    if(!form) return;
+
+    const whatsappNumero = "5511935052743";
+
+    form.addEventListener("submit", event=>{
+
+        event.preventDefault();
+
+        if(!form.checkValidity()){
+
+            form.classList.add("was-validated");
+
+            form.reportValidity();
+
+            return;
+
+        }
+
+        const nome = form.nome.value.trim();
+        const email = form.email.value.trim();
+        const telefone = form.telefone.value.trim();
+        const mensagem = form.mensagem.value.trim();
+
+        const texto =
+`Olá! Vim pelo site da Fabinho Guinchos.
+
+Nome: ${nome}
+E-mail: ${email}
+Telefone: ${telefone}
+
+Mensagem:
+${mensagem}`;
+
+        const url = `https://wa.me/${whatsappNumero}?text=${encodeURIComponent(texto)}`;
+
+        window.open(url, "_blank");
+
+        form.reset();
+
+    });
+
+})();
