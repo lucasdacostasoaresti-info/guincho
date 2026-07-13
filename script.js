@@ -60,6 +60,8 @@ function openMenu(){
 
     menuToggle?.classList.add("active");
 
+    menuToggle?.setAttribute("aria-expanded","true");
+
     mobileMenu?.classList.add("active");
 
     menuOverlay?.classList.add("active");
@@ -71,6 +73,8 @@ function closeMenu(){
     body.classList.remove("menu-open");
 
     menuToggle?.classList.remove("active");
+
+    menuToggle?.setAttribute("aria-expanded","false");
 
     mobileMenu?.classList.remove("active");
 
@@ -538,19 +542,20 @@ window.addEventListener("pageshow",()=>{
 
 
 
+let map = null;
+
 const empresa = {
-    lat: -23.3166,
-    lng: -46.0369
+    lat: -23.315,
+    lng: -46.221
 };
 
 function initMap() {
 
-    const empresa = {
-        lat: -23.315,
-        lng: -46.221
-    };
+    const mapEl = document.getElementById("map");
 
-    const map = new google.maps.Map(document.getElementById("map"), {
+    if(!mapEl) return;
+
+    map = new google.maps.Map(mapEl, {
         center: empresa,
         zoom: 11,
         mapTypeId: "roadmap"
@@ -562,88 +567,41 @@ function initMap() {
         title: "Fabinho Guinchos"
     });
 
-    const circle = new google.maps.Circle({
-        strokeColor: "#F97316",
-        strokeOpacity: 1,
-        strokeWeight: 3,
-        fillColor: "#F97316",
-        fillOpacity: 0.25,
-        map: map,
-        center: empresa,
-        radius: 30000
-    });
-
-        
-    new google.maps.Marker({
-
-        position: empresa,
-
-        map: map,
-
-        title: "Fabinho Guinchos"
-
-    });
-
     new google.maps.Circle({
-
         map,
-
         center: empresa,
-
         radius:30000,
-
         strokeColor:"#F97316",
-
         strokeOpacity:.9,
-
         strokeWeight:3,
-
         fillColor:"#F97316",
-
         fillOpacity:.18
-
     });
 
     const cidades = [
 
         {
-
             nome:"Santa Isabel",
-
             lat:-23.315,
-
             lng:-46.221
-
         },
 
         {
-
             nome:"Arujá",
-
             lat:-23.396,
-
             lng:-46.320
-
         },
 
         {
-
             nome:"Guarulhos",
-
             lat:-23.454,
-
             lng:-46.533
-
         },
 
         {
-
             nome:"Mogi das Cruzes",
-
             lat:-23.522,
-
             lng:-46.188
-
         }
 
     ];
@@ -662,7 +620,88 @@ function initMap() {
 
     });
 
-    console.log(circle);
+    /* ==========================================================
+       CORRIGE O MAPA FICANDO EM BRANCO AO REDIMENSIONAR A TELA
+
+       O Google Maps só desenha os "tiles" com base no tamanho
+       do contêiner NO MOMENTO da criação. Quando o layout muda
+       (ex: media queries alterando a altura de .coverage-map ao
+       trocar o tamanho da tela / rotacionar o celular), o mapa
+       não percebe sozinho e o canvas fica em branco.
+
+       A solução é observar mudanças de tamanho do contêiner e
+       disparar manualmente o evento "resize" do Maps, seguido
+       de um recentralização (senão ele "resize" mas desloca o
+       mapa para o canto).
+    ========================================================== */
+
+    function refreshMap(){
+
+        if(!map) return;
+
+        google.maps.event.trigger(map, "resize");
+
+        map.setCenter(empresa);
+
+    }
+
+    if("ResizeObserver" in window){
+
+        const mapResizeObserver = new ResizeObserver(debounce(refreshMap, 150));
+
+        mapResizeObserver.observe(mapEl);
+
+    }
+
+    window.addEventListener("resize", debounce(refreshMap, 150));
+
+    window.addEventListener("orientationchange", ()=>{
+
+        setTimeout(refreshMap, 200);
+
+    });
+
+    /* Caso a aba fique oculta (troca de app no celular) e volte,
+       o mapa também pode renderizar em branco */
+
+    document.addEventListener("visibilitychange", ()=>{
+
+        if(document.visibilityState === "visible"){
+
+            setTimeout(refreshMap, 150);
+
+        }
+
+    });
+
+}
+
+/* ==========================================================
+   CARREGAMENTO DO GOOGLE MAPS
+
+   Antes, o script do Maps era carregado direto no HTML com
+   "async" (que na prática ignora o "defer" junto dele). Isso
+   criava uma condição de corrida: dependendo da velocidade da
+   conexão/cache, o Maps podia terminar de carregar e tentar
+   chamar initMap() ANTES deste arquivo (script.js) terminar de
+   rodar e definir a função — resultando em erro silencioso e
+   mapa em branco, de forma intermitente e difícil de reproduzir.
+
+   A solução é só pedir o script do Maps depois que initMap já
+   existe (aqui embaixo), garantindo 100% a ordem de execução.
+========================================================== */
+
+if(document.getElementById("map")){
+
+    const mapsScript = document.createElement("script");
+
+    mapsScript.src =
+        "https://maps.googleapis.com/maps/api/js?key=AIzaSyBD6RDnhX-J5kb06tZzmvwgcb4xLAD9rZo&loading=async&callback=initMap";
+
+    mapsScript.async = true;
+
+    document.head.appendChild(mapsScript);
+
 }
 
 

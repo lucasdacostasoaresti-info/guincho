@@ -1328,11 +1328,11 @@ body.menu-open{
 
     z-index:5;
 
-    width:100%;
+    width:min(100% - 48px,var(--container));
 
-    margin: 5%;
+    margin-inline:auto;
 
-    padding-bottom: 10%;
+    padding-bottom:clamp(60px,10vh,120px);
 
 }
 
@@ -3970,11 +3970,16 @@ strong{
     .about-slider-arrow.next{ right:10px; }
 }
 
+
 /* ===================================================================
    RESPONSIVIDADE
+   Reescrito para funcionar corretamente em qualquer tela mobile,
+   do tablet (1250px) até celulares pequenos (320px).
+   Breakpoints: 1250 / 1100 / 992 / 860 / 700 / 560 / 420 / 360
 =================================================================== */
+
 /* ===========================
-   1250px
+   1250px — header vira hambúrguer
 =========================== */
 
 @media (max-width:1250px){
@@ -3985,17 +3990,6 @@ strong{
 
     .navbar{
         display:none;
-        flex:1;
-        margin-left:20px;
-    }
-
-    .navbar ul{
-        justify-content:center;
-        gap:22px;
-    }
-
-    .navbar a{
-        font-size:.90rem;
     }
 
     .menu-toggle{
@@ -4005,7 +3999,7 @@ strong{
     .header-actions .btn{
         padding-inline:22px;
         min-height:48px;
-        font-size:.90rem;
+        font-size:.9rem;
     }
 
     .logo img{
@@ -4015,79 +4009,44 @@ strong{
 }
 
 /* ===========================
-   1200px
-=========================== */
-
-@media (max-width:1200px){
-
-    .trust-list{
-        grid-template-columns:repeat(2,1fr);
-    }
-
-    .trust-list li:nth-child(2){
-        border-right:none;
-    }
-
-    .hero{
-        padding-bottom:180px;
-    }
-
-    .grid-4{
-        grid-template-columns:repeat(2,1fr);
-    }
-
-}
-
-/* ===========================
-   1100px
+   1100px — grades de cards em 2 colunas
 =========================== */
 
 @media (max-width:1100px){
 
     .services-grid,
-    .differentials-grid,
     .testimonials-grid{
         grid-template-columns:repeat(2,1fr);
     }
 
-    .payment-grid{
+    .payments-grid{
         grid-template-columns:repeat(3,1fr);
     }
 
     .footer-grid{
         grid-template-columns:repeat(2,1fr);
+        gap:40px 32px;
     }
 
 }
 
 /* ===========================
-   992px
+   992px — tablets: empilha as seções em coluna única
 =========================== */
 
 @media (max-width:992px){
 
     .section{
-        padding:90px 0;
+        padding:80px 0;
     }
 
-    .grid-2,
-    .grid-3,
-    .hero-container{
-        grid-template-columns:1fr;
+    .section-header{
+        margin-bottom:48px;
     }
 
-    .hero-image{
-        display:none;
-    }
-
+    /* Hero */
     .hero{
-        text-align:center;
-        padding-top:100px;
-    }
-
-    .hero-content{
-        margin-inline:auto;
-        align-items:center;
+        padding-top:calc(var(--header-height) + 24px);
     }
 
     .hero-list{
@@ -4095,18 +4054,9 @@ strong{
         width:100%;
     }
 
-    .hero-buttons,
-    .hero-info{
-        justify-content:center;
-    }
-
-    .whatsapp-float{
-        width:64px;
-        height:64px;
-    }
-
+    /* Indicadores */
     .highlights{
-        margin-top:-48px;
+        margin-top:-40px;
     }
 
     .highlights-grid{
@@ -4115,6 +4065,7 @@ strong{
 
     .highlight-card{
         border-right:none!important;
+        padding:26px 20px;
     }
 
     .highlight-card:nth-child(1),
@@ -4122,10 +4073,10 @@ strong{
         border-bottom:1px solid var(--color-gray-200);
     }
 
+    /* Quem Somos */
     .about-grid{
         grid-template-columns:1fr;
-        gap:40px;
-        align-items:start;
+        gap:36px;
     }
 
     .about-image{
@@ -4138,762 +4089,532 @@ strong{
         text-align:center;
     }
 
-    .about-content h2{
-        max-width:700px;
-        margin:0 auto 24px;
-    }
-
+    .about-content h2,
     .about-content p{
-        max-width:700px;
-        margin:0 auto 20px;
+        max-width:640px;
+        margin-inline:auto;
     }
 
     .about-list{
-        max-width:600px;
-        margin:32px auto;
-    }
-
-    .about-list li{
-        justify-content:flex-start;
+        max-width:520px;
+        margin:28px auto;
+        text-align:left;
     }
 
     .about-content .btn{
-        margin:auto;
+        margin-inline:auto;
     }
 
-    .about-image-media{
-        min-height:420px;
+    .about-image-media,
+    .about-image-media img,
+    .about-slider-track,
+    .about-slide,
+    .about-slide img{
+        min-height:360px;
     }
 
-    .about-image-media img{
-        min-height:420px;
-    }
-
-}
-
-/* ===========================
-   780px
-=========================== */
-
-@media (max-width:780px){
-
+    /* Área de atendimento */
     .coverage-grid{
-
-        display:grid;
         grid-template-columns:1fr;
-        gap:40px;
-
+        gap:36px;
     }
 
     .coverage-content{
-
         order:1;
+        text-align:center;
+    }
 
+    .coverage-content .section-header,
+    .coverage-content > p{
+        margin-inline:auto;
+    }
+
+    .coverage-list{
+        margin-inline:auto;
+    }
+
+    .coverage-content #btnGuincho{
+        margin-inline:auto;
     }
 
     .coverage-map{
-
         order:2;
-        width:100%;
-        height:420px;
-
-    }
-
-    #map{
-
-        width:100%;
-        height:100%;
-
+        height:380px;
     }
 
 }
+
 /* ===========================
-   768px
+   860px — cards de serviço/depoimento
+   passam para 1 coluna (2 colunas fica
+   apertado antes disso em telas de celular)
 =========================== */
 
-@media (max-width:768px){
+@media (max-width:860px){
+
+    .services-grid,
+    .testimonials-grid{
+        grid-template-columns:1fr;
+    }
+
+    .payments-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+}
+
+/* ===========================
+   700px — ajustes gerais de celular
+=========================== */
+
+@media (max-width:700px){
 
     .container{
         width:min(100% - 32px,var(--container));
     }
 
+    /* Header */
     .header{
-        height:78px;
+        height:76px;
     }
 
     .header.scrolled{
-        height:68px;
+        height:66px;
+    }
+
+    html{
+        scroll-padding-top:76px;
     }
 
     .logo img{
-        height:44px;
+        height:42px;
+    }
+
+    .header.scrolled .logo img{
+        height:38px;
     }
 
     .header-actions .btn{
         display:none;
     }
 
+    .menu-toggle{
+        width:46px;
+        height:46px;
+        border-radius:12px;
+    }
+
+    /* Tipografia */
     h1{
-        font-size:2.6rem;
+        font-size:clamp(1.9rem,1.3rem + 4vw,2.6rem);
     }
 
     h2{
-        font-size:2rem;
+        font-size:clamp(1.6rem,1.2rem + 2.6vw,2rem);
     }
 
-    .section-header{
-        margin-bottom:50px;
-    }
-
-    .btn{
-        width:100%;
-    }
-
-    .hero{
-        min-height:auto;
-        padding-top:120px;
-        padding-bottom:220px;
-    }
-
+    .section-header p,
     .hero p{
         font-size:1rem;
     }
 
+    /* Botões: largura total, empilhados, dedo maior */
+    .btn{
+        width:100%;
+        min-height:54px;
+        padding-inline:24px;
+    }
+
     .hero-buttons{
+        flex-direction:column;
         width:100%;
     }
 
     .hero-buttons .btn{
-        width:100%;
         min-width:100%;
     }
 
-    .hero-trust{
-        width:calc(100% - 32px);
+    /* Hero */
+    .hero{
+        min-height:auto;
+        padding-top:calc(var(--header-height) + 16px);
+        padding-bottom:56px;
     }
 
-    .trust-list{
-        grid-template-columns:1fr;
+    .hero-content{
+        gap:22px;
     }
-
-    .trust-list li{
-        border-right:none;
-        border-bottom:1px solid var(--color-gray-200);
-    }
-
-    .trust-list li:last-child{
-        border-bottom:none;
-    }
-
-    .back-to-top{
-        right:20px;
-        bottom:100px;
-    }
-
-    .whatsapp-float{
-        right:20px;
-        bottom:20px;
-    }
-
-    .process-timeline::before{
-        left:26px;
-    }
-
-    .process-step{
-        padding-left:78px;
-        margin-bottom:36px;
-    }
-
-    .step-number{
-        width:52px;
-        height:52px;
-        font-size:1rem;
-        border-width:4px;
-    }
-
-}
-
-/* ===========================
-   576px
-=========================== */
-
-@media (max-width:576px){
 
     .hero-badge{
-        font-size:.78rem;
+        font-size:.8rem;
         padding:10px 18px;
+        text-align:center;
     }
 
-    .hero-scroll{
-        display:none;
-    }
-
-    .grid-4{
-        grid-template-columns:1fr;
-    }
-
-    .section{
-        padding:70px 0;
-    }
-
-    .tow-rig{
-        width:190px;
-    }
-
-    .tow-truck-hint{
-        display:none;
-    }
-
-    .about-image-media,
-    .about-image-media img{
-        min-height:220px;
-    }
-    
-    .about-grid{
-        gap:30px;
-    }
-
-    .about-image-media{
-        min-height:260px;
-    }
-
-    .about-image-media img{
-        min-height:260px;
-    }
-
-    .about-slider-arrow{
-        width:42px;
-        height:42px;
-    }
-
-    .about-slider-dots{
-        bottom:16px;
-    }
-
+    /* Indicadores */
     .highlights{
-        margin-top:-32px;
+        margin-top:24px;
+        padding-top:0;
     }
 
     .highlights-grid{
         grid-template-columns:1fr;
+        border-radius:22px;
     }
 
     .highlight-card:nth-child(1),
     .highlight-card:nth-child(2){
-        border-bottom:none;
+        border-bottom:1px solid var(--color-gray-200);
     }
 
     .highlight-card:not(:last-child){
         border-bottom:1px solid var(--color-gray-200);
     }
 
-}
-
-/* ===========================
-   480px
-=========================== */
-
-@media (max-width:480px){
-
-    .header .container{
-        gap:16px;
+    /* Slider Quem Somos */
+    .about-image-media,
+    .about-image-media img,
+    .about-slider-track,
+    .about-slide,
+    .about-slide img{
+        min-height:260px;
     }
 
-    .logo img{
-        height:40px;
+    .about-slider-arrow{
+        width:38px;
+        height:38px;
     }
 
-    .section-header::after{
-        width:50px;
+    .about-slider-arrow.prev{ left:10px; }
+    .about-slider-arrow.next{ right:10px; }
+
+    .about-slider-dots{
+        bottom:14px;
+    }
+
+    /* Serviços */
+    .service-card{
+        padding:26px 22px;
+    }
+
+    .service-icon{
+        width:56px;
+        height:56px;
+        margin-bottom:18px;
+    }
+
+    /* Como Funciona */
+    .process-timeline::before{
+        left:24px;
+    }
+
+    .process-step{
+        padding-left:70px;
+        margin-bottom:32px;
+    }
+
+    .step-number{
+        width:48px;
+        height:48px;
+        font-size:.95rem;
+        border-width:4px;
+    }
+
+    .process-step h3{
+        font-size:1.05rem;
+    }
+
+    /* Área de atendimento */
+    .coverage-list{
+        grid-template-columns:repeat(2,1fr);
+        gap:12px;
     }
 
     .coverage-map{
-        height:320px;
+        height:300px;
+        border-radius:18px;
+    }
+
+    /* Pagamentos */
+    .payment-card{
+        padding:20px;
+        min-height:104px;
+    }
+
+    /* Depoimentos */
+    .testimonial-card{
+        padding:26px 22px;
+    }
+
+    /* FAQ */
+    .faq-item summary{
+        padding:20px 20px;
+        font-size:.98rem;
+        gap:12px;
+    }
+
+    .faq-item summary::after{
+        width:28px;
+        height:28px;
+        font-size:1.1rem;
+    }
+
+    .faq-item p{
+        padding:0 20px 20px;
+    }
+
+    /* CTA final */
+    .cta-actions{
+        flex-direction:column;
+        gap:14px;
+        margin-top:32px;
+    }
+
+    .cta-actions .btn{
+        width:100%;
+    }
+
+    .cta-phone strong{
+        font-size:1.6rem;
+    }
+
+    /* Footer */
+    .footer{
+        padding:64px 0 32px;
+    }
+
+    .footer-grid{
+        grid-template-columns:1fr;
+        gap:36px;
+        text-align:left;
+    }
+
+    .footer-bottom{
+        margin-top:44px;
+    }
+
+    /* Botões flutuantes */
+    .whatsapp-float{
+        width:58px;
+        height:58px;
+        right:16px;
+        bottom:16px;
+    }
+
+    .back-to-top{
+        right:16px;
+        bottom:84px;
+        width:46px;
+        height:46px;
     }
 
 }
-/* ==========================================================
-RESPONSIVIDADE PREMIUM
-320px até 1920px
-Cole no FINAL do style.css
-==========================================================*/
 
-
-/* ==========================
-1400px
-========================== */
-
-@media (max-width:1400px){
-
-.container{
-    width:min(calc(100% - 48px),1200px);
-}
-
-.hero h1{
-    font-size:3rem;
-}
-
-}
-
-
-/* ==========================
-1200px
-========================== */
-
-@media (max-width:1200px){
-
-.section{
-    padding:90px 0;
-}
-
-.about-grid,
-.coverage-grid{
-    grid-template-columns:1fr;
-    gap:50px;
-}
-
-.services-grid{
-    grid-template-columns:repeat(2,1fr);
-}
-
-.differentials-grid{
-    grid-template-columns:repeat(2,1fr);
-}
-
-.payments-grid{
-    grid-template-columns:repeat(3,1fr);
-}
-
-.footer-grid{
-    grid-template-columns:repeat(2,1fr);
-}
-
-.hero h1{
-    font-size:2.7rem;
-}
-
-}
-
-
-/* ==========================
-992px
-========================== */
-
-@media (max-width:992px){
-
-.navbar{
-    display:none;
-}
-
-.menu-toggle{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-}
-
-.header-actions .btn{
-    display:none;
-}
-
-.hero{
-    min-height:auto;
-    padding-top:140px;
-    padding-bottom:90px;
-}
-
-.hero .container{
-    margin:0 auto;
-}
-
-.hero-content{
-    max-width:100%;
-}
-
-.hero h1{
-    font-size:2.4rem;
-}
-
-.hero p{
-    font-size:1rem;
-}
-
-.hero-list{
-    grid-template-columns:1fr;
-}
-
-.hero-buttons{
-    flex-direction:column;
-}
-
-.hero-buttons .btn{
-    width:100%;
-    min-width:0;
-}
-
-.services-grid,
-.testimonials-grid{
-    grid-template-columns:1fr;
-}
-
-.differentials-grid{
-    grid-template-columns:1fr 1fr;
-}
-
-.payments-grid{
-    grid-template-columns:repeat(2,1fr);
-}
-
-.footer-grid{
-    grid-template-columns:1fr;
-    text-align:center;
-}
-
-.footer-logo{
-    margin:auto auto 20px;
-}
-
-.timeline::before{
-    left:25px;
-}
-
-.timeline-item{
-    padding-left:80px;
-}
-
-.timeline-number{
-    width:50px;
-    height:50px;
-    font-size:1rem;
-}
-
-}
-
-
-/* ==========================
-768px
-========================== */
-
-@media (max-width:768px){
-
-.container{
-    width:calc(100% - 32px);
-}
-
-.section{
-    padding:70px 0;
-}
-
-.section-header{
-    margin-bottom:45px;
-}
-
-.section-header h2{
-    font-size:2rem;
-}
-
-.hero{
-    padding-top:120px;
-}
-
-.hero-badge{
-    width:100%;
-    justify-content:center;
-    text-align:center;
-}
-
-.hero h1{
-    font-size:2rem;
-    line-height:1.15;
-}
-
-.hero p{
-    font-size:.98rem;
-}
-
-.hero-buttons{
-    gap:14px;
-}
-
-.hero-buttons .btn{
-    min-height:54px;
-}
-
-.about-grid,
-.coverage-grid{
-    gap:40px;
-}
-
-.service-card,
-.differential-card,
-.payment-card,
-.testimonial-card{
-    padding:28px;
-}
-
-.payments-grid{
-    grid-template-columns:1fr;
-}
-
-.cta-actions{
-    flex-direction:column;
-}
-
-.cta-actions .btn{
-    width:100%;
-}
-
-.city-list{
-    grid-template-columns:1fr;
-}
-
-.hero-scroll{
-    display:none;
-}
-
-}
-
-
-/* ==========================
-576px
-========================== */
-
-@media (max-width:576px){
-
-:root{
-
---header-height:72px;
-
-}
-
-.logo img{
-    height:42px;
-}
-
-.header.scrolled .logo img{
-    height:38px;
-}
-
-.hero{
-    padding-top:100px;
-}
-
-.hero h1{
-    font-size:1.7rem;
-}
-
-.hero p{
-    font-size:.95rem;
-}
-
-.section-tag{
-    font-size:.72rem;
-    padding:8px 14px;
-}
-
-.btn{
-    width:100%;
-    min-height:52px;
-    padding:14px;
-}
-
-.hero-buttons{
-    width:100%;
-}
-
-.mobile-menu{
-    padding:30px;
-}
-
-.mobile-menu ul{
-    width:100%;
-}
-
-.mobile-menu a{
-    display:block;
-    text-align:center;
-    padding:14px;
-    font-size:1.1rem;
-}
-
-.whatsapp-float{
-
-    width:58px;
-    height:58px;
-    right:16px;
-    bottom:16px;
-
-}
-
-.whatsapp-float img{
-
-    width:36px;
-    height:36px;
-
-}
-
-.back-to-top{
-
-    right:16px;
-    bottom:90px;
-
-}
-
-}
-
-
-/* ==========================
-400px
-========================== */
-
-@media (max-width:400px){
-
-.container{
-
-    width:calc(100% - 22px);
-
-}
-
-.hero h1{
-
-    font-size:1.45rem;
-
-}
-
-.hero p{
-
-    font-size:.9rem;
-
-}
-
-.section-header h2{
-
-    font-size:1.6rem;
-
-}
-
-.service-card,
-.payment-card,
-.testimonial-card,
-.timeline-content{
-
-    padding:20px;
-
-}
-
-.hero-badge{
-
-    font-size:.75rem;
-
-}
-
-.mobile-menu a{
-
-    font-size:1rem;
-
-}
-
-}
-
-
-/* ==========================
-360px
-========================== */
+/* ===========================
+   560px — celulares médios
+=========================== */
+
+@media (max-width:560px){
+
+    .section{
+        padding:64px 0;
+    }
+
+    .hero-badge{
+        font-size:.75rem;
+        padding:9px 16px;
+    }
+
+    .about-image-media,
+    .about-image-media img,
+    .about-slider-track,
+    .about-slide,
+    .about-slide img{
+        min-height:230px;
+    }
+
+    .about-list li{
+        align-items:flex-start;
+        text-align:left;
+    }
+
+    .payments-grid{
+        grid-template-columns:repeat(2,1fr);
+        gap:14px;
+    }
+
+    .payment-card h3{
+        font-size:.95rem;
+    }
+
+    .coverage-list{
+        grid-template-columns:1fr;
+    }
+
+    .testimonial-card p{
+        font-size:.95rem;
+    }
+
+}
+
+/* ===========================
+   420px — celulares pequenos
+=========================== */
+
+@media (max-width:420px){
+
+    .header .container{
+        gap:14px;
+    }
+
+    .logo img{
+        height:38px;
+    }
+
+    .section-header{
+        margin-bottom:38px;
+    }
+
+    .section-tag{
+        font-size:.75rem;
+        padding:8px 16px;
+    }
+
+    h1{
+        font-size:clamp(1.65rem,1.1rem + 5vw,2.1rem);
+    }
+
+    h2{
+        font-size:clamp(1.4rem,1.1rem + 3vw,1.7rem);
+    }
+
+    .hero-list li{
+        font-size:.92rem;
+    }
+
+    .payments-grid{
+        grid-template-columns:1fr;
+        gap:12px;
+    }
+
+    .payment-card{
+        min-height:auto;
+        padding:20px;
+        flex-direction:row;
+        justify-content:flex-start;
+        align-items:center;
+        gap:16px;
+        text-align:left;
+    }
+
+    .payment-card h3{
+        font-size:1rem;
+        flex:1;
+        min-width:0;
+    }
+
+    .highlight-card{
+        padding:20px 16px;
+        gap:12px;
+    }
+
+    .highlight-icon{
+        width:44px;
+        height:44px;
+    }
+
+    .about-image-media,
+    .about-image-media img,
+    .about-slider-track,
+    .about-slide,
+    .about-slide img{
+        min-height:200px;
+    }
+
+    .service-card,
+    .testimonial-card{
+        padding:22px 18px;
+    }
+
+    .process-step{
+        padding-left:60px;
+    }
+
+    .step-number{
+        width:42px;
+        height:42px;
+        font-size:.85rem;
+        border-width:3px;
+    }
+
+    .coverage-map{
+        height:260px;
+    }
+
+    .cta-phone strong{
+        font-size:1.4rem;
+    }
+
+    .whatsapp-float{
+        width:52px;
+        height:52px;
+    }
+
+    .back-to-top{
+        width:42px;
+        height:42px;
+        bottom:76px;
+    }
+
+}
+
+/* ===========================
+   360px — telas mínimas (iPhone SE e similares)
+=========================== */
 
 @media (max-width:360px){
 
-html{
+    .container{
+        width:min(100% - 24px,var(--container));
+    }
 
-font-size:15px;
+    .btn{
+        padding-inline:18px;
+        font-size:.92rem;
+    }
 
-}
+    .hero-buttons{
+        gap:12px;
+    }
 
-.hero{
+    .highlights-grid{
+        border-radius:18px;
+    }
 
-padding-top:90px;
-
-}
-
-.hero h1{
-
-font-size:1.3rem;
-
-}
-
-.hero-list li{
-
-font-size:.9rem;
-
-}
-
-.btn{
-
-font-size:.9rem;
+    .faq-item summary{
+        font-size:.9rem;
+    }
 
 }
 
-.section{
+/* ===========================
+   Telas muito baixas em paisagem
+   (celular deitado)
+=========================== */
 
-padding:55px 0;
+@media (max-height:480px) and (orientation:landscape){
 
-}
+    .hero{
+        min-height:auto;
+        padding-top:calc(var(--header-height) + 20px);
+        padding-bottom:40px;
+    }
 
-}
-
-
-/* ==========================
-320px
-========================== */
-
-@media (max-width:320px){
-
-html{
-
-font-size:14px;
-
-}
-
-.container{
-
-width:calc(100% - 16px);
-
-}
-
-.hero h1{
-
-font-size:1.2rem;
-
-}
-
-.hero p{
-
-font-size:.85rem;
-
-}
-
-.hero-buttons .btn{
-
-padding:12px;
-
-}
-
-.logo img{
-
-height:36px;
-
-}
-
-.whatsapp-float{
-
-width:52px;
-height:52px;
-
-}
-
-.whatsapp-float img{
-
-width:30px;
-height:30px;
-
-}
+    .mobile-menu{
+        justify-content:flex-start;
+        padding-top:100px;
+        overflow-y:auto;
+        gap:20px;
+    }
 
 }
