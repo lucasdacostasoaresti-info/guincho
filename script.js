@@ -807,9 +807,9 @@ function montarMensagemWhatsapp(latitude, longitude){
 
         return (
         `Olá! Vim pelo site da Fabinho Guinchos e preciso de um guincho.
+Minha localização é:
 
-        Minha localização é:
-        https://www.google.com/maps?q=${latitude},${longitude}`
+https://www.google.com/maps?q=${latitude},${longitude}`
         );
 
     }
