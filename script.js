@@ -7,6 +7,19 @@
 "use strict";
 
 /* ==========================================================
+   LOCALIZAÇÃO DA EMPRESA (compartilhada pelo mapa e pelo botão
+   "Calcular Rota" — antes cada um tinha sua própria cópia dessa
+   variável em escopos diferentes, o que quebrava o botão)
+========================================================== */
+
+const EMPRESA_COORDS = {
+
+    lat: -23.4080,
+    lng: -46.3946
+
+};
+
+/* ==========================================================
    ELEMENTOS
 ========================================================== */
 
@@ -542,244 +555,317 @@ window.addEventListener("pageshow",()=>{
 
 
 
-let map = null;
+(function () {
 
-const empresa = {
-    lat: -23.4080,
-    lng: -46.3946
-};
+    // Tempo máximo de espera pela localização (ms)
+    const TIMEOUT_GEO = 8000;
 
-function initMap() {
-
-    const mapEl = document.getElementById("map");
-
-    if(!mapEl) return;
-
-    map = new google.maps.Map(mapEl, {
-        center: empresa,
-        zoom: 11,
-        mapTypeId: "roadmap"
-    });
-
-    new google.maps.Marker({
-        position: empresa,
-        map: map,
-        title: "Fabinho Guinchos"
-    });
-
-    new google.maps.Circle({
-        map,
-        center: empresa,
-        radius:45000,
-        strokeColor:"#F97316",
-        strokeOpacity:.9,
-        strokeWeight:3,
-        fillColor:"#F97316",
-        fillOpacity:.18
-    });
-
-    const cidades = [
-
-        {
-            nome:"Guarulhos",
-            lat:-23.4538,
-            lng:-46.5333
-        },
-
-        {
-            nome:"Arujá",
-            lat:-23.3963,
-            lng:-46.3203
-        },
-
-        {
-            nome:"Itaquaquecetuba",
-            lat:-23.4864,
-            lng:-46.3489
-        },
-
-        {
-            nome:"Mairiporã",
-            lat:-23.3186,
-            lng:-46.5866
-        },
-
-        {
-            nome:"São Paulo",
-            lat:-23.5505,
-            lng:-46.6333
-        }
-
-        /* "Região Metropolitana" não entra como marcador porque não
-           é um ponto específico — ela já fica representada pelo
-           círculo de cobertura desenhado ao redor da empresa. */
-
-    ];
-
-    cidades.forEach(cidade=>{
-
-        new google.maps.Marker({
-
-            position:cidade,
-
-            map,
-
-            title:cidade.nome
-
-        });
-
-    });
-
-    /* ==========================================================
-       CORRIGE O MAPA FICANDO EM BRANCO AO REDIMENSIONAR A TELA
-
-       O Google Maps só desenha os "tiles" com base no tamanho
-       do contêiner NO MOMENTO da criação. Quando o layout muda
-       (ex: media queries alterando a altura de .coverage-map ao
-       trocar o tamanho da tela / rotacionar o celular), o mapa
-       não percebe sozinho e o canvas fica em branco.
-
-       A solução é observar mudanças de tamanho do contêiner e
-       disparar manualmente o evento "resize" do Maps, seguido
-       de um recentralização (senão ele "resize" mas desloca o
-       mapa para o canto).
-    ========================================================== */
-
-    function refreshMap(){
-
-        if(!map) return;
-
-        google.maps.event.trigger(map, "resize");
-
-        map.setCenter(empresa);
-
+    function isWhatsAppLink(href) {
+        return /wa\.me|api\.whatsapp\.com/.test(href);
     }
 
-    if("ResizeObserver" in window){
-
-        const mapResizeObserver = new ResizeObserver(debounce(refreshMap, 150));
-
-        mapResizeObserver.observe(mapEl);
-
+    function extrairMensagemAtual(url) {
+        try {
+            const u = new URL(url);
+            return u.searchParams.get("text") || "";
+        } catch (e) {
+            return "";
+        }
     }
 
-    window.addEventListener("resize", debounce(refreshMap, 150));
+    function montarUrlComLocalizacao(urlOriginal, lat, lng) {
+        const u = new URL(urlOriginal);
+        const mensagemAtual = extrairMensagemAtual(urlOriginal);
+        const linkMaps = `https://www.google.com/maps?q=${lat},${lng}`;
 
-    window.addEventListener("orientationchange", ()=>{
+        const novaMensagem = mensagemAtual
+            ? `${mensagemAtual}\n\n📍 Minha localização: ${linkMaps}`
+            : `📍 Minha localização: ${linkMaps}`;
 
-        setTimeout(refreshMap, 200);
+        u.searchParams.set("text", novaMensagem);
+        return u.toString();
+    }
 
-    });
+    function abrirWhatsApp(url) {
+        window.open(url, "_blank", "noopener");
+    }
 
-    /* Caso a aba fique oculta (troca de app no celular) e volte,
-       o mapa também pode renderizar em branco */
+    function tratarCliqueWhatsApp(event) {
 
-    document.addEventListener("visibilitychange", ()=>{
+        const link = event.target.closest("a");
 
-        if(document.visibilityState === "visible"){
+        if (!link || !isWhatsAppLink(link.href)) return;
 
-            setTimeout(refreshMap, 150);
+        // Se o navegador não suporta geolocalização, segue o link normal
+        if (!("geolocation" in navigator)) return;
 
-        }
+        event.preventDefault();
 
-    });
+        const urlOriginal = link.href;
 
-}
+        navigator.geolocation.getCurrentPosition(
+
+            (posicao) => {
+                const { latitude, longitude } = posicao.coords;
+                const urlFinal = montarUrlComLocalizacao(urlOriginal, latitude, longitude);
+                abrirWhatsApp(urlFinal);
+            },
+
+            (erro) => {
+                // Usuário negou ou deu timeout: abre o link normal, sem localização
+                console.warn("Não foi possível obter localização:", erro.message);
+                abrirWhatsApp(urlOriginal);
+            },
+
+            {
+                enableHighAccuracy: true,
+                timeout: TIMEOUT_GEO,
+                maximumAge: 0
+            }
+        );
+    }
+
+    document.addEventListener("click", tratarCliqueWhatsApp);
+
+})();
+
 
 /* ==========================================================
-   CARREGAMENTO DO GOOGLE MAPS
-
-   Antes, o script do Maps era carregado direto no HTML com
-   "async" (que na prática ignora o "defer" junto dele). Isso
-   criava uma condição de corrida: dependendo da velocidade da
-   conexão/cache, o Maps podia terminar de carregar e tentar
-   chamar initMap() ANTES deste arquivo (script.js) terminar de
-   rodar e definir a função — resultando em erro silencioso e
-   mapa em branco, de forma intermitente e difícil de reproduzir.
-
-   A solução é só pedir o script do Maps depois que initMap já
-   existe (aqui embaixo), garantindo 100% a ordem de execução.
+   MAPA - OPENSTREETMAP + LEAFLET
 ========================================================== */
 
-if(document.getElementById("map")){
+(function(){
 
-    const mapsScript = document.createElement("script");
+const mapElement = document.getElementById("map");
 
-    mapsScript.src =
-        "https://maps.googleapis.com/maps/api/js?key=AIzaSyBD6RDnhX-J5kb06tZzmvwgcb4xLAD9rZo&loading=async&callback=initMap";
+if(!mapElement) return;
 
-    mapsScript.async = true;
+/* ==========================================================
+   MAPA
+========================================================== */
 
-    document.head.appendChild(mapsScript);
+const map = L.map("map",{
 
-}
+    zoomControl:true,
+    scrollWheelZoom:false
 
+}).setView([EMPRESA_COORDS.lat, EMPRESA_COORDS.lng],11);
 
-const telefone = "5511935052743";
+/* ==========================================================
+   TILES
+========================================================== */
 
-document
-.getElementById("btnGuincho")
-?.addEventListener("click", solicitarGuincho);
+L.tileLayer(
 
-function solicitarGuincho(){
+    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
 
-    if(!navigator.geolocation){
+    {
 
-        alert("Seu navegador não suporta localização.");
+        maxZoom:19,
 
-        return;
+        attribution:"© OpenStreetMap"
 
     }
 
-    navigator.geolocation.getCurrentPosition(
+).addTo(map);
 
-        sucesso,
+/* ==========================================================
+   ÍCONE DA EMPRESA
+========================================================== */
 
-        erro,
+const iconeEmpresa = L.icon({
 
+    iconUrl:"img/logo.png",
+
+    iconSize:[50,50],
+
+    iconAnchor:[25,50],
+
+    popupAnchor:[0,-45]
+
+});
+
+const iconeCidade = L.icon({
+    
+    iconUrl:"img/logo-icone.png",
+
+    iconSize:[50,50],
+
+    iconAnchor:[25,50],
+
+    popupAnchor:[0,-45]
+})
+
+/* ==========================================================
+   MARCADOR PRINCIPAL
+========================================================== */
+
+L.marker(
+
+    [EMPRESA_COORDS.lat,EMPRESA_COORDS.lng],
+
+    {
+
+        icon:iconeEmpresa
+
+    }
+
+)
+
+.addTo(map)
+
+.bindPopup(
+
+    "<strong>Fabinho Guinchos</strong><br>Base operacional"
+
+);
+
+/* ==========================================================
+   ÁREA DE COBERTURA
+========================================================== */
+
+L.circle(
+
+    [EMPRESA_COORDS.lat,EMPRESA_COORDS.lng],
+
+    {
+
+        radius:40000,
+
+        color:"#F97316",
+
+        fillColor:"#F97316",
+
+        fillOpacity:.18,
+
+        weight:3
+
+    }
+
+).addTo(map);
+
+/* ==========================================================
+   CIDADES
+========================================================== */
+
+const cidades=[
+
+    {
+
+        nome:"Guarulhos",
+
+        lat:-23.4538,
+
+        lng:-46.5333
+
+    },
+
+    {
+
+        nome:"Arujá",
+
+        lat:-23.3963,
+
+        lng:-46.3203
+
+    },
+
+    {
+
+        nome:"Itaquaquecetuba",
+
+        lat:-23.4864,
+
+        lng:-46.3489
+
+    },
+
+    {
+
+        nome:"Mairiporã",
+
+        lat:-23.3186,
+
+        lng:-46.5866
+
+    },
+
+    {
+
+        nome:"São Paulo",
+
+        lat:-23.5505,
+
+        lng:-46.6333
+
+    }
+
+];
+
+cidades.forEach(cidade=>{
+
+     L.marker(
+        [cidade.lat, cidade.lng],
         {
+            icon: iconeCidade
+        }
+    )
+    .addTo(map)
+    .bindPopup(cidade.nome);
 
-            enableHighAccuracy:true,
+});
 
-            timeout:10000,
+/* ==========================================================
+   AJUSTA AO REDIMENSIONAR
+========================================================== */
 
-            maximumAge:0
+function atualizarMapa(){
+
+    map.invalidateSize();
+
+}
+
+window.addEventListener(
+
+    "resize",
+
+    ()=>{
+
+        setTimeout(atualizarMapa,200);
+
+    }
+
+);
+
+window.addEventListener(
+
+    "orientationchange",
+
+    ()=>{
+
+        setTimeout(atualizarMapa,300);
+
+    }
+
+);
+
+document.addEventListener(
+
+    "visibilitychange",
+
+    ()=>{
+
+        if(document.visibilityState==="visible"){
+
+            setTimeout(atualizarMapa,200);
 
         }
 
-    );
+    }
 
-}
+);
 
-function sucesso(posicao){
-
-    const latitude = posicao.coords.latitude;
-
-    const longitude = posicao.coords.longitude;
-
-    const mensagem =
-
-`Olá!
-
-Preciso de um guincho.
-
-Minha localização é:
-
-https://www.google.com/maps?q=${latitude},${longitude}`;
-
-    const url =
-
-`https://wa.me/${telefone}?text=${encodeURIComponent(mensagem)}`;
-
-    window.open(url,"_blank");
-
-}
-
-function erro(){
-
-    alert("Não foi possível obter sua localização.");
-
-}
+})();
 
 /* ==========================================================
    TODOS OS BOTÕES "CHAMAR NO WHATSAPP" DO SITE
@@ -940,7 +1026,7 @@ document.querySelectorAll('a[href^="https://wa.me/"]').forEach(link=>{
 
                 const origem = `${posicao.coords.latitude},${posicao.coords.longitude}`;
 
-                const destino = `${empresa.lat},${empresa.lng}`;
+                const destino = `${EMPRESA_COORDS.lat},${EMPRESA_COORDS.lng}`;
 
                 const url =
                     `https://www.google.com/maps/dir/?api=1&origin=${origem}&destination=${destino}&travelmode=driving`;

@@ -93,11 +93,36 @@
         href="img/logo.png">
 
     <!--
-        SDK do EmailJS — usado só pela página de contato, para o
-        formulário conseguir enviar e-mail sem precisar de servidor.
-        Veja as instruções de configuração no topo do script.js.
+        SDK do EmailJS foi REMOVIDO daqui de propósito: ele não é usado
+        por nenhuma linha do script.js hoje (o formulário funciona 100%
+        via WhatsApp), então mantê-lo carregado era um script de
+        terceiro rodando à toa em cada visita — superfície de ataque
+        sem necessidade nenhuma. Se um dia for configurar o envio
+        automático por e-mail (instruções no topo do script.js), volte
+        a incluir o SDK, mas com um hash de integridade (SRI), assim:
+
+        <script
+            src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4.x.x/dist/email.min.js"
+            integrity="sha256-HASH_GERADO_PARA_A_VERSAO_EXATA"
+            crossorigin="anonymous"></script>
+
+        Use uma versão travada (ex: @4.4.1, não "@4") e gere o hash em
+        https://www.srihash.org antes de publicar. E adicione o domínio
+        https://cdn.jsdelivr.net ao script-src do Content-Security-Policy
+        abaixo.
     -->
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+    <!-- ===========================
+         SEGURANÇA
+    ============================ -->
+
+    <meta
+        http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none';">
+
+    <meta
+        name="referrer"
+        content="strict-origin-when-cross-origin">
 
 </head>
 
