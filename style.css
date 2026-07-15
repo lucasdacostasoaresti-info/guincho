@@ -1607,7 +1607,7 @@ body.menu-open{
 
     font-size:1rem;
 
-}
+}   
 
 /* ===================================================================
    HERO INFO
@@ -2795,9 +2795,9 @@ img{
 
 .back-to-top:hover{
 
-    transform:
+    transform: translateY(-6px);
 
-        translateY(-6px);
+    cursor: pointer;
 
 }
 
