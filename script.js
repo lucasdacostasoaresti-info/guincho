@@ -805,11 +805,12 @@ function montarMensagemWhatsapp(latitude, longitude){
 
     if(latitude !== undefined && longitude !== undefined){
 
-        return
-`Olá! Vim pelo site da Fabinho Guinchos e preciso de um guincho.
+        return (
+        `Olá! Vim pelo site da Fabinho Guinchos e preciso de um guincho.
 
-Minha localização é:
-https://www.google.com/maps?q=${latitude},${longitude}`;
+        Minha localização é:
+        https://www.google.com/maps?q=${latitude},${longitude}`
+        );
 
     }
 
@@ -1254,36 +1255,6 @@ document.querySelectorAll('a[href^="https://wa.me/"]').forEach(link=>{
    nada fica quebrado — só não é 100% automático até configurar.
 ========================================================== */
 
-const EMAILJS_CONFIG = {
-
-    publicKey:  "SUA_PUBLIC_KEY_AQUI",
-    serviceId:  "SEU_SERVICE_ID_AQUI",
-    templateId: "SEU_TEMPLATE_ID_AQUI"
-
-};
-
-const EMAIL_DESTINATARIO = "lukascspolar@gmail.com";
-
-function emailjsConfigurado(){
-
-    return (
-
-        typeof emailjs !== "undefined" &&
-        EMAILJS_CONFIG.publicKey !== "SUA_PUBLIC_KEY_AQUI" &&
-        EMAILJS_CONFIG.serviceId !== "SEU_SERVICE_ID_AQUI" &&
-        EMAILJS_CONFIG.templateId !== "SEU_TEMPLATE_ID_AQUI"
-
-    );
-
-}
-
-/* Inicializa o EmailJS assim que possível, se já estiver configurado */
-
-if(typeof emailjs !== "undefined" && emailjsConfigurado()){
-
-    emailjs.init({ publicKey: EMAILJS_CONFIG.publicKey });
-
-}
 
 (function initContactForm(){
 
@@ -1481,41 +1452,20 @@ if(typeof emailjs !== "undefined" && emailjsConfigurado()){
 
     function abrirWhatsapp(nome, email, telefone, mensagem){
 
-        const texto =
-`Olá! Vim pelo site da Fabinho Guinchos.
+        const texto = `Olá! Vim pelo site da Fabinho Guinchos.
 
-Nome: ${nome}
-E-mail: ${email}
-Telefone: ${telefone}
+    *Nome:* ${nome}
+    *E-mail:* ${email}
+    *Telefone:* ${telefone}
 
-Mensagem:
-${mensagem}`;
+    *Mensagem:*
+    ${mensagem}`;
 
         const url = `https://wa.me/${whatsappNumero}?text=${encodeURIComponent(texto)}`;
 
         window.open(url, "_blank", "noopener,noreferrer");
 
     }
-
-    function abrirEmailFallback(nome, email, telefone, mensagem){
-
-        const assunto = encodeURIComponent(`Contato pelo site - ${nome}`);
-
-        const corpo = encodeURIComponent(
-
-`Nome: ${nome}
-E-mail: ${email}
-Telefone: ${telefone}
-
-Mensagem:
-${mensagem}`
-
-        );
-
-        window.location.href = `mailto:${EMAIL_DESTINATARIO}?subject=${assunto}&body=${corpo}`;
-
-    }
-
     form.addEventListener("submit", event=>{
 
         event.preventDefault();
@@ -1569,45 +1519,12 @@ ${mensagem}`
 
         abrirWhatsapp(nome, email, telefone, mensagem);
 
-        if(emailjsConfigurado()){
+        mostrarFeedback(
+            "WhatsApp aberto com sucesso! É só confirmar o envio da mensagem.",
+            "sucesso"
+        );
 
-            emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.templateId, {
-
-                from_name: nome,
-                from_email: email,
-                phone: telefone,
-                message: mensagem,
-                to_email: EMAIL_DESTINATARIO
-
-            })
-            .then(()=>{
-
-                mostrarFeedback("Tudo certo! E-mail enviado e WhatsApp aberto para você confirmar.", "sucesso");
-
-                finalizarEnvio();
-
-            })
-            .catch(erro=>{
-
-                console.error("Falha ao enviar e-mail pelo EmailJS:", erro);
-
-                mostrarFeedback("O WhatsApp foi aberto, mas houve um problema ao enviar o e-mail. Tente novamente em instantes.", "erro");
-
-                finalizarEnvio();
-
-            });
-
-        } else {
-
-            /* EmailJS ainda não configurado: abre o app de e-mail já preenchido */
-
-            abrirEmailFallback(nome, email, telefone, mensagem);
-
-            mostrarFeedback("Abrimos o WhatsApp e o seu aplicativo de e-mail, já com a mensagem pronta — é só confirmar o envio em cada um.", "sucesso");
-
-            finalizarEnvio();
-
-        }
+        finalizarEnvio();
 
     });
 
