@@ -885,7 +885,7 @@ document.querySelectorAll('a[href^="https://wa.me/"]').forEach(link=>{
 
         event.preventDefault();
 
-        const numero = "5511935052743";
+        const numero = "5511947309527";
 
         abrirWhatsappComLocalizacao(numero, link.href);
 
@@ -1272,7 +1272,7 @@ document.querySelectorAll('a[href^="https://wa.me/"]').forEach(link=>{
 
     if(!form) return;
 
-    const whatsappNumero = "5511935052743";
+    const whatsappNumero = "5511947309527";
 
     const feedback = document.getElementById("formFeedback");
 
