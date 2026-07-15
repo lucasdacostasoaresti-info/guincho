@@ -581,28 +581,38 @@ function initMap() {
     const cidades = [
 
         {
-            nome:"Santa Isabel",
-            lat:-23.315,
-            lng:-46.221
+            nome:"Guarulhos",
+            lat:-23.4538,
+            lng:-46.5333
         },
 
         {
             nome:"Arujá",
-            lat:-23.396,
-            lng:-46.320
+            lat:-23.3963,
+            lng:-46.3203
         },
 
         {
-            nome:"Guarulhos",
-            lat:-23.454,
-            lng:-46.533
+            nome:"Itaquaquecetuba",
+            lat:-23.4864,
+            lng:-46.3489
         },
 
         {
-            nome:"Mogi das Cruzes",
-            lat:-23.522,
-            lng:-46.188
+            nome:"Mairiporã",
+            lat:-23.3186,
+            lng:-46.5866
+        },
+
+        {
+            nome:"São Paulo",
+            lat:-23.5505,
+            lng:-46.6333
         }
+
+        /* "Região Metropolitana" não entra como marcador porque não
+           é um ponto específico — ela já fica representada pelo
+           círculo de cobertura desenhado ao redor da empresa. */
 
     ];
 
@@ -709,7 +719,7 @@ const telefone = "5511935052743";
 
 document
 .getElementById("btnGuincho")
-.addEventListener("click", solicitarGuincho);
+?.addEventListener("click", solicitarGuincho);
 
 function solicitarGuincho(){
 
@@ -770,6 +780,104 @@ function erro(){
     alert("Não foi possível obter sua localização.");
 
 }
+
+/* ==========================================================
+   CALCULAR ROTA ATÉ A EMPRESA (página atendimento.html)
+
+   Usa a localização atual da pessoa (com permissão dela) e
+   abre o Google Maps já com a rota traçada até a Fabinho
+   Guinchos — funciona tanto no navegador quanto no app do
+   Google Maps no celular.
+========================================================== */
+
+(function initCalcularRota(){
+
+    const btnRota = document.getElementById("btnRota");
+
+    if(!btnRota) return;
+
+    const status = document.getElementById("rotaStatus");
+
+    const textoOriginal = btnRota.textContent;
+
+    function mostrarStatus(texto, tipo){
+
+        if(!status) return;
+
+        status.textContent = texto;
+
+        status.classList.remove("is-loading","is-success","is-error");
+
+        if(tipo){
+
+            status.classList.add(tipo);
+
+        }
+
+    }
+
+    btnRota.addEventListener("click", ()=>{
+
+        if(!navigator.geolocation){
+
+            mostrarStatus("Seu navegador não suporta compartilhar localização.", "is-error");
+
+            return;
+
+        }
+
+        btnRota.disabled = true;
+
+        btnRota.textContent = "Buscando sua localização...";
+
+        mostrarStatus("Buscando sua localização, aceite a permissão do navegador...", "is-loading");
+
+        navigator.geolocation.getCurrentPosition(
+
+            posicao=>{
+
+                const origem = `${posicao.coords.latitude},${posicao.coords.longitude}`;
+
+                const destino = `${empresa.lat},${empresa.lng}`;
+
+                const url =
+                    `https://www.google.com/maps/dir/?api=1&origin=${origem}&destination=${destino}&travelmode=driving`;
+
+                window.open(url, "_blank", "noopener,noreferrer");
+
+                mostrarStatus("Pronto! Abrimos a rota até nós no Google Maps.", "is-success");
+
+                btnRota.disabled = false;
+
+                btnRota.textContent = textoOriginal;
+
+            },
+
+            ()=>{
+
+                mostrarStatus("Não conseguimos acessar sua localização. Verifique a permissão do navegador e tente de novo.", "is-error");
+
+                btnRota.disabled = false;
+
+                btnRota.textContent = textoOriginal;
+
+            },
+
+            {
+
+                enableHighAccuracy:true,
+
+                timeout:10000,
+
+                maximumAge:0
+
+            }
+
+        );
+
+    });
+
+})();
 
 /* ==========================================================
    SLIDER "QUEM SOMOS"
@@ -965,14 +1073,116 @@ function erro(){
 
 
 /* ==========================================================
+   BUSCA NO FAQ (página faq.html)
+========================================================== */
+
+(function initFaqSearch(){
+
+    const campo = document.getElementById("faqSearch");
+
+    const lista = document.getElementById("faqList");
+
+    const vazio = document.getElementById("faqEmpty");
+
+    if(!campo || !lista) return;
+
+    const itens = [...lista.querySelectorAll(".faq-item")];
+
+    campo.addEventListener("input", ()=>{
+
+        const termo = campo.value.trim().toLowerCase();
+
+        let visiveis = 0;
+
+        itens.forEach(item=>{
+
+            const texto = item.textContent.toLowerCase();
+
+            const corresponde = texto.includes(termo);
+
+            item.hidden = !corresponde;
+
+            if(corresponde){
+
+                visiveis++;
+
+            }
+
+        });
+
+        if(vazio){
+
+            vazio.hidden = visiveis > 0;
+
+        }
+
+    });
+
+})();
+
+/* ==========================================================
    FORMULÁRIO DE CONTATO (página contato.html)
 
-   O site é 100% estático (sem servidor), então não há como
-   enviar um e-mail de verdade a partir daqui. Para não deixar
-   o formulário "morto", ele monta a mensagem digitada pela
-   pessoa e abre o WhatsApp da empresa já com o texto pronto —
-   o mesmo número usado no resto do site.
+   O site é 100% estático (sem servidor). Isso significa que:
+
+   - O envio pelo WHATSAPP funciona 100% sozinho, sem precisar
+     configurar nada — é só abrir o link com a mensagem pronta.
+
+   - O envio por E-MAIL de verdade (chegando na caixa de entrada
+     automaticamente) depende de um serviço externo, porque o
+     JavaScript do navegador não consegue mandar e-mail sozinho
+     (e colocar senha de e-mail aqui no código seria inseguro).
+     Por isso usamos o EmailJS (https://www.emailjs.com), que é
+     gratuito e feito exatamente pra isso.
+
+   PARA ATIVAR O ENVIO AUTOMÁTICO DE E-MAIL (± 5 minutos):
+
+   1. Crie uma conta grátis em https://www.emailjs.com
+   2. Em "Email Services", conecte seu Gmail (ou outro provedor)
+      e anote o "Service ID" gerado.
+   3. Em "Email Templates", crie um template com estas variáveis
+      no corpo: {{from_name}} {{from_email}} {{phone}} {{message}}
+      — e no campo "To Email" do template, coloque:
+      lukascspolar@gmail.com
+      Anote o "Template ID" gerado.
+   4. Em "Account" > "General", copie a "Public Key".
+   5. Cole os 3 valores nas constantes EMAILJS_CONFIG abaixo.
+
+   Enquanto isso não for feito, o formulário automaticamente abre
+   o aplicativo de e-mail da pessoa com tudo já preenchido, então
+   nada fica quebrado — só não é 100% automático até configurar.
 ========================================================== */
+
+const EMAILJS_CONFIG = {
+
+    publicKey:  "SUA_PUBLIC_KEY_AQUI",
+    serviceId:  "SEU_SERVICE_ID_AQUI",
+    templateId: "SEU_TEMPLATE_ID_AQUI"
+
+};
+
+const EMAIL_DESTINATARIO = "lukascspolar@gmail.com";
+
+function emailjsConfigurado(){
+
+    return (
+
+        typeof emailjs !== "undefined" &&
+        EMAILJS_CONFIG.publicKey !== "SUA_PUBLIC_KEY_AQUI" &&
+        EMAILJS_CONFIG.serviceId !== "SEU_SERVICE_ID_AQUI" &&
+        EMAILJS_CONFIG.templateId !== "SEU_TEMPLATE_ID_AQUI"
+
+    );
+
+}
+
+/* Inicializa o EmailJS assim que possível, se já estiver configurado */
+
+if(typeof emailjs !== "undefined" && emailjsConfigurado()){
+
+    emailjs.init({ publicKey: EMAILJS_CONFIG.publicKey });
+
+}
 
 (function initContactForm(){
 
@@ -982,24 +1192,193 @@ function erro(){
 
     const whatsappNumero = "5511935052743";
 
-    form.addEventListener("submit", event=>{
+    const feedback = document.getElementById("formFeedback");
 
-        event.preventDefault();
+    const botaoEnviar = form.querySelector(".form-submit");
 
-        if(!form.checkValidity()){
+    const campos = {
 
-            form.classList.add("was-validated");
+        nome: {
+            input: form.nome,
+            erro: document.getElementById("erro-nome"),
+            validar(valor){
 
-            form.reportValidity();
+                if(!valor) return "Digite seu nome.";
 
-            return;
+                if(valor.trim().length < 3) return "Digite seu nome completo.";
+
+                return "";
+
+            }
+        },
+
+        email: {
+            input: form.email,
+            erro: document.getElementById("erro-email"),
+            validar(valor){
+
+                if(!valor) return "Digite seu e-mail.";
+
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+                if(!emailRegex.test(valor.trim())) return "Digite um e-mail válido.";
+
+                return "";
+
+            }
+        },
+
+        telefone: {
+            input: form.telefone,
+            erro: document.getElementById("erro-telefone"),
+            validar(valor){
+
+                if(!valor) return "Digite seu telefone.";
+
+                const apenasNumeros = valor.replace(/\D/g,"");
+
+                if(apenasNumeros.length < 10 || apenasNumeros.length > 11){
+
+                    return "Digite um telefone válido, com DDD.";
+
+                }
+
+                return "";
+
+            }
+        },
+
+        mensagem: {
+            input: form.mensagem,
+            erro: document.getElementById("erro-mensagem"),
+            validar(valor){
+
+                if(!valor) return "Escreva sua mensagem.";
+
+                if(valor.trim().length < 10) return "Conte um pouco mais (mín. 10 caracteres).";
+
+                return "";
+
+            }
+        }
+
+    };
+
+    function mostrarErro(campo, mensagem){
+
+        campo.input.classList.toggle("invalid", Boolean(mensagem));
+
+        if(campo.erro){
+
+            campo.erro.textContent = mensagem;
 
         }
 
-        const nome = form.nome.value.trim();
-        const email = form.email.value.trim();
-        const telefone = form.telefone.value.trim();
-        const mensagem = form.mensagem.value.trim();
+    }
+
+    function validarCampo(nomeCampo){
+
+        const campo = campos[nomeCampo];
+
+        const mensagem = campo.validar(campo.input.value);
+
+        mostrarErro(campo, mensagem);
+
+        return mensagem === "";
+
+    }
+
+    function validarFormulario(){
+
+        let valido = true;
+
+        let primeiroInvalido = null;
+
+        Object.keys(campos).forEach(nomeCampo=>{
+
+            const ok = validarCampo(nomeCampo);
+
+            if(!ok){
+
+                valido = false;
+
+                if(!primeiroInvalido){
+
+                    primeiroInvalido = campos[nomeCampo].input;
+
+                }
+
+            }
+
+        });
+
+        if(primeiroInvalido){
+
+            primeiroInvalido.focus();
+
+        }
+
+        return valido;
+
+    }
+
+    /* Limpa o erro do campo assim que a pessoa corrige */
+
+    Object.keys(campos).forEach(nomeCampo=>{
+
+        const campo = campos[nomeCampo];
+
+        campo.input.addEventListener("input", ()=>{
+
+            if(campo.input.classList.contains("invalid")){
+
+                validarCampo(nomeCampo);
+
+            }
+
+        });
+
+        campo.input.addEventListener("blur", ()=>{
+
+            validarCampo(nomeCampo);
+
+        });
+
+    });
+
+    function formatarTelefoneExibicao(valor){
+
+        const numeros = valor.replace(/\D/g,"");
+
+        if(numeros.length === 11){
+
+            return `(${numeros.slice(0,2)}) ${numeros.slice(2,7)}-${numeros.slice(7)}`;
+
+        }
+
+        if(numeros.length === 10){
+
+            return `(${numeros.slice(0,2)}) ${numeros.slice(2,6)}-${numeros.slice(6)}`;
+
+        }
+
+        return valor;
+
+    }
+
+    function mostrarFeedback(texto, tipo){
+
+        if(!feedback) return;
+
+        feedback.textContent = texto;
+
+        feedback.classList.remove("is-error","is-success");
+
+        feedback.classList.add(tipo === "erro" ? "is-error" : "is-success");
+
+    }
+
+    function abrirWhatsapp(nome, email, telefone, mensagem){
 
         const texto =
 `Olá! Vim pelo site da Fabinho Guinchos.
@@ -1013,9 +1392,121 @@ ${mensagem}`;
 
         const url = `https://wa.me/${whatsappNumero}?text=${encodeURIComponent(texto)}`;
 
-        window.open(url, "_blank");
+        window.open(url, "_blank", "noopener,noreferrer");
 
-        form.reset();
+    }
+
+    function abrirEmailFallback(nome, email, telefone, mensagem){
+
+        const assunto = encodeURIComponent(`Contato pelo site - ${nome}`);
+
+        const corpo = encodeURIComponent(
+
+`Nome: ${nome}
+E-mail: ${email}
+Telefone: ${telefone}
+
+Mensagem:
+${mensagem}`
+
+        );
+
+        window.location.href = `mailto:${EMAIL_DESTINATARIO}?subject=${assunto}&body=${corpo}`;
+
+    }
+
+    form.addEventListener("submit", event=>{
+
+        event.preventDefault();
+
+        if(feedback){
+
+            feedback.textContent = "";
+
+            feedback.classList.remove("is-error","is-success");
+
+        }
+
+        if(!validarFormulario()){
+
+            mostrarFeedback("Confira os campos destacados antes de enviar.", "erro");
+
+            return;
+
+        }
+
+        const nome = form.nome.value.trim();
+        const email = form.email.value.trim();
+        const telefone = formatarTelefoneExibicao(form.telefone.value.trim());
+        const mensagem = form.mensagem.value.trim();
+
+        if(botaoEnviar){
+
+            botaoEnviar.disabled = true;
+
+            botaoEnviar.textContent = "Enviando...";
+
+        }
+
+        function finalizarEnvio(){
+
+            if(botaoEnviar){
+
+                botaoEnviar.disabled = false;
+
+                botaoEnviar.textContent = "Enviar pelo WhatsApp";
+
+            }
+
+            form.reset();
+
+            Object.keys(campos).forEach(nomeCampo=>mostrarErro(campos[nomeCampo],""));
+
+        }
+
+        /* WhatsApp sempre funciona, não depende de nenhuma configuração */
+
+        abrirWhatsapp(nome, email, telefone, mensagem);
+
+        if(emailjsConfigurado()){
+
+            emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.templateId, {
+
+                from_name: nome,
+                from_email: email,
+                phone: telefone,
+                message: mensagem,
+                to_email: EMAIL_DESTINATARIO
+
+            })
+            .then(()=>{
+
+                mostrarFeedback("Tudo certo! E-mail enviado e WhatsApp aberto para você confirmar.", "sucesso");
+
+                finalizarEnvio();
+
+            })
+            .catch(erro=>{
+
+                console.error("Falha ao enviar e-mail pelo EmailJS:", erro);
+
+                mostrarFeedback("O WhatsApp foi aberto, mas houve um problema ao enviar o e-mail. Tente novamente em instantes.", "erro");
+
+                finalizarEnvio();
+
+            });
+
+        } else {
+
+            /* EmailJS ainda não configurado: abre o app de e-mail já preenchido */
+
+            abrirEmailFallback(nome, email, telefone, mensagem);
+
+            mostrarFeedback("Abrimos o WhatsApp e o seu aplicativo de e-mail, já com a mensagem pronta — é só confirmar o envio em cada um.", "sucesso");
+
+            finalizarEnvio();
+
+        }
 
     });
 

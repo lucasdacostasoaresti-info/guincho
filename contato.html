@@ -90,7 +90,14 @@
     <link
         rel="icon"
         type="image/png"
-        href="img/sem-fundo-logo.png">
+        href="img/logo.png">
+
+    <!--
+        SDK do EmailJS — usado só pela página de contato, para o
+        formulário conseguir enviar e-mail sem precisar de servidor.
+        Veja as instruções de configuração no topo do script.js.
+    -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
 </head>
 
@@ -106,7 +113,7 @@
             class="logo">
 
             <img
-                src="img/sem-fundo-logo.png"
+                src="img/logo.png"
                 alt="Fabinho Guinchos">
 
         </a>
@@ -121,7 +128,7 @@
 
                 <li>
 
-                    <a href="index.html#quem-somos">
+                    <a href="quem-somos.html">
 
                         Quem Somos
 
@@ -131,7 +138,7 @@
 
                 <li>
 
-                    <a href="index.html#servicos">
+                    <a href="servicos.html">
 
                         Serviços
 
@@ -141,7 +148,7 @@
 
                 <li>
 
-                    <a href="index.html#atendimento">
+                    <a href="atendimento.html">
 
                         Área de Atendimento
 
@@ -151,9 +158,19 @@
 
                 <li>
 
-                    <a href="index.html#faq">
+                    <a href="faq.html">
 
                         FAQ
+
+                    </a>
+
+                </li>
+
+                <li>
+
+                    <a href="galeria.html">
+
+                        Galeria
 
                     </a>
 
@@ -213,13 +230,15 @@
 
         <li><a href="index.html">Início</a></li>
 
-        <li><a href="index.html#quem-somos">Quem Somos</a></li>
+        <li><a href="quem-somos.html">Quem Somos</a></li>
 
-        <li><a href="index.html#servicos">Serviços</a></li>
+        <li><a href="servicos.html">Serviços</a></li>
 
-        <li><a href="index.html#atendimento">Área de Atendimento</a></li>
+        <li><a href="atendimento.html">Área de Atendimento</a></li>
 
-        <li><a href="index.html#faq">FAQ</a></li>
+        <li><a href="faq.html">FAQ</a></li>
+
+        <li><a href="galeria.html">Galeria</a></li>
 
         <li><a href="contato.html" class="active">Contato</a></li>
 
@@ -415,6 +434,7 @@ CONTATO
                                 name="nome"
                                 autocomplete="name"
                                 required>
+                            <small class="field-error" id="erro-nome"></small>
                         </div>
 
                         <div class="form-group">
@@ -425,6 +445,7 @@ CONTATO
                                 name="email"
                                 autocomplete="email"
                                 required>
+                            <small class="field-error" id="erro-email"></small>
                         </div>
 
                     </div>
@@ -438,6 +459,7 @@ CONTATO
                             autocomplete="tel"
                             placeholder="(11) 90000-0000"
                             required>
+                        <small class="field-error" id="erro-telefone"></small>
                     </div>
 
                     <div class="form-group">
@@ -448,6 +470,7 @@ CONTATO
                             rows="5"
                             placeholder="Conte pra gente o que você precisa..."
                             required></textarea>
+                        <small class="field-error" id="erro-mensagem"></small>
                     </div>
 
                     <button
@@ -457,6 +480,13 @@ CONTATO
                         Enviar pelo WhatsApp
 
                     </button>
+
+                    <p
+                        class="form-feedback"
+                        id="formFeedback"
+                        role="status"
+                        aria-live="polite">
+                    </p>
 
                     <p class="form-note">
 
@@ -487,7 +517,7 @@ FOOTER
             <section class="footer-column">
 
                 <img
-                    src="img/sem-fundo-logo.png"
+                    src="img/logo.png"
                     alt="Fabinho Guinchos"
                     class="footer-logo">
 
@@ -646,7 +676,7 @@ BACK TO TOP
     aria-label="Voltar ao topo">
 
          <img
-            src="img/seta-para-cima.png"
+            src="img/logo-icone.png"
             alt="Seta para voltar ao topo">
 
 </button>
