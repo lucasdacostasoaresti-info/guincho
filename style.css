@@ -153,7 +153,7 @@ table{
     --content-width:900px;
     --text-width:720px;
 
-    --header-height: 90px;
+    --header-height: 110px;
 
     /* ==========================================================
        BORDAS
@@ -688,9 +688,9 @@ body.menu-open{
     top:0;
     left:0;
     width:100%;
-    height:var(--header-height);
     z-index:var(--z-header);
 
+    height:var(--header-height);
     display:flex;
     align-items:center;
 
@@ -757,7 +757,7 @@ body.menu-open{
 
 .logo img{
 
-    height:54px;
+    height: 90px;
 
     width:auto;
 
@@ -1253,7 +1253,7 @@ body.menu-open{
     display:flex;
     align-items:center;
     min-height:100svh;
-    padding-top: 5%;
+    padding-top:calc(var(--header-height) + 40px);
     overflow:hidden;
     isolation:isolate;
     background:#111827;
@@ -2120,21 +2120,59 @@ body.menu-open{
 }
 
 .testimonial-card{
-    background:#FFF;
+    position:relative;
+
+    padding:32px;
+
     border-radius:24px;
-    padding:36px;
+    background:#fff;
+
     border:1px solid var(--color-gray-200);
     box-shadow:var(--shadow-sm);
+}
+
+.testimonial-card p{
+    margin:16px 0 0;
+    line-height:1.7;
 }
 
 .testimonial-stars{
     color:#F59E0B;
     margin-bottom:20px;
 }
-
 .testimonial-author{
-    margin-top:24px;
-    font-weight:700;
+    display:flex;
+    align-items:center;
+    gap:16px;
+    padding-top:18px;
+
+    border-top:1px solid var(--color-gray-200);
+}
+
+.testimonial-author img{
+    width:54px;
+    height:54px;
+
+    border-radius:50%;
+    object-fit:cover;
+
+    flex-shrink:0;
+
+    border:3px solid #fff;
+
+    box-shadow:var(--shadow-sm);
+}
+
+.testimonial-author strong{
+    display:block;
+    color:var(--color-dark);
+    font-size:1rem;
+}
+
+.testimonial-author span{
+    display:block;
+    color:var(--color-gray-500);
+    font-size:.9rem;
 }
 
 /* ===================================================================
@@ -2258,17 +2296,6 @@ body.menu-open{
     text-align:center;
 }
 
-/* ===================================================================
-   RESPONSIVIDADE
-=================================================================== */
-
-/* =====================================================
-HEADER RESPONSIVO (1200px até 1100px)
-===================================================== */
-
-/* ===================================================================
-   27. MICROINTERAÇÕES E REFINAMENTOS
-=================================================================== */
 
 /* -----------------------------
    Animação suave em todos
@@ -2744,18 +2771,6 @@ img{
     height:100%;
 
 }
-
-/* ===================================================================
-   40. RESPONSIVIDADE EXTRA
-=================================================================== */
-
-/* ===================================================================
-   RESPONSIVIDADE
-=================================================================== */
-
-/* ===================================================================
-   14. RESPONSIVIDADE BASE
-=================================================================== */
 
 /* ===================================================================
    29. GUINCHO INTERATIVO (QUEM SOMOS)
@@ -3667,35 +3682,6 @@ strong{
 
 }
 
-/* Autor do depoimento com "avatar" de iniciais */
-
-.testimonial-card footer{
-
-    display:flex;
-    align-items:center;
-    gap:12px;
-    margin-top:22px;
-    padding-top:18px;
-    border-top:1px solid var(--color-gray-200);
-
-}
-
-.testimonial-card footer::before{
-
-    content:"C";
-    display:grid;
-    place-items:center;
-    width:36px;
-    height:36px;
-    border-radius:50%;
-    background:#FFF4ED;
-    color:var(--color-primary);
-    font-weight:800;
-    font-size:.85rem;
-    flex-shrink:0;
-
-}
-
 /* CTA final com profundidade extra */
 
 .cta-final{
@@ -3968,21 +3954,6 @@ strong{
     transform:scale(1.25);
 }
 
-/* Responsivo (dentro do seu media query mobile já existente) */
-@media (max-width:768px){
-    .about-slider-track,
-    .about-slide,
-    .about-slide img{
-        min-height:220px;
-    }
-    .about-slider-arrow{
-        width:36px;
-        height:36px;
-    }
-    .about-slider-arrow.prev{ left:10px; }
-    .about-slider-arrow.next{ right:10px; }
-}
-
 
 /* ===================================================================
    RESPONSIVIDADE
@@ -4124,6 +4095,19 @@ strong{
     .about-slide,
     .about-slide img{
         min-height:360px;
+    }
+
+    .about-slider-arrow{
+        width:44px;
+        height:44px;
+    }
+
+    .about-slider-arrow.prev{
+        left:20px;
+    }
+
+    .about-slider-arrow.next{
+        right:20px;
     }
 
     /* Área de atendimento */
@@ -4284,25 +4268,32 @@ strong{
         border-bottom:1px solid var(--color-gray-200);
     }
 
-    /* Slider Quem Somos */
-    .about-image-media,
-    .about-image-media img,
+ .about-image-media{
+        border-radius:22px;
+        overflow:hidden;
+    }
+
     .about-slider-track,
     .about-slide,
     .about-slide img{
-        min-height:260px;
+        min-height:240px;
     }
 
     .about-slider-arrow{
-        width:38px;
-        height:38px;
+        width:40px;
+        height:40px;
     }
 
-    .about-slider-arrow.prev{ left:10px; }
-    .about-slider-arrow.next{ right:10px; }
+    .about-slider-arrow.prev{
+        left:18px;
+    }
+
+    .about-slider-arrow.next{
+        right:18px;
+    }
 
     .about-slider-dots{
-        bottom:14px;
+        bottom:12px;
     }
 
     /* Serviços */
@@ -4417,8 +4408,8 @@ strong{
     .back-to-top{
         right:16px;
         bottom:84px;
-        width:46px;
-        height:46px;
+        width:54px;
+        height:54px;
     }
 
 }
@@ -4544,6 +4535,31 @@ strong{
         min-height:200px;
     }
 
+     .about-slider-arrow{
+        width:36px;
+        height:36px;
+
+        background:rgba(255,255,255,.92);
+    }
+
+    .about-slider-arrow svg{
+        width:16px;
+        height:16px;
+    }
+
+    .about-slider-arrow.prev{
+        left:14px;
+    }
+
+    .about-slider-arrow.next{
+        right:14px;
+    }
+
+    .about-slider-dots{
+        bottom:10px;
+        gap:6px;
+    }
+
     .service-card,
     .testimonial-card{
         padding:22px 18px;
@@ -4574,8 +4590,8 @@ strong{
     }
 
     .back-to-top{
-        width:42px;
-        height:42px;
+        width:48px;
+        height:48px;
         bottom:76px;
     }
 
@@ -4606,6 +4622,19 @@ strong{
 
     .faq-item summary{
         font-size:.9rem;
+    }
+
+       .about-slider-arrow{
+        width:34px;
+        height:34px;
+    }
+
+    .about-slider-arrow.prev{
+        left:12px;
+    }
+
+    .about-slider-arrow.next{
+        right:12px;
     }
 
 }
