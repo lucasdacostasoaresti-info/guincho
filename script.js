@@ -545,8 +545,8 @@ window.addEventListener("pageshow",()=>{
 let map = null;
 
 const empresa = {
-    lat: -23.315,
-    lng: -46.221
+    lat: -23.4080,
+    lng: -46.3946
 };
 
 function initMap() {
@@ -570,7 +570,7 @@ function initMap() {
     new google.maps.Circle({
         map,
         center: empresa,
-        radius:30000,
+        radius:45000,
         strokeColor:"#F97316",
         strokeOpacity:.9,
         strokeWeight:3,
