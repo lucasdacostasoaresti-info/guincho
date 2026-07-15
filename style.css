@@ -1252,11 +1252,16 @@ body.menu-open{
     position:relative;
     display:flex;
     align-items:center;
-    min-height:100svh;
+    min-height:100vh;
     padding-top:calc(var(--header-height) + 40px);
     overflow:hidden;
     isolation:isolate;
-    background:#111827;
+    background-color:#111827;
+    background-image: url("img/logo.png"); 
+    background-position: center 10%;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+
 }
 
 
@@ -4201,6 +4206,25 @@ strong{
         border-radius:12px;
     }
 
+    .menu-toggle span:nth-child(1){
+    top:14px;
+    }
+
+    .menu-toggle span:nth-child(2){
+        top:22px;
+    }
+
+    .menu-toggle span:nth-child(3){
+        top:30px;
+    }
+    .menu-toggle.active span:nth-child(1){
+    top:22px;
+    }
+
+    .menu-toggle.active span:nth-child(3){
+        top:22px;
+    }
+
     /* Tipografia */
     h1{
         font-size:clamp(1.9rem,1.3rem + 4vw,2.6rem);
@@ -4653,7 +4677,7 @@ strong{
     }
 
     .mobile-menu{
-        justify-content:flex-start;
+        justify-content:center;
         padding-top:100px;
         overflow-y:auto;
         gap:20px;
