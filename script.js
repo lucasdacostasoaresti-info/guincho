@@ -782,6 +782,107 @@ function erro(){
 }
 
 /* ==========================================================
+   TODOS OS BOTÕES "CHAMAR NO WHATSAPP" DO SITE
+
+   Antes, esses botões eram apenas links para wa.me, sem
+   mensagem nenhuma — a pessoa precisava chamar no WhatsApp e
+   DEPOIS explicar/mandar a localização por conta própria.
+
+   Agora, ao clicar em QUALQUER botão/link "Chamar no WhatsApp"
+   do site (menu mobile, botões do topo, rodapé, botão flutuante,
+   CTAs das páginas de serviços etc.), a pessoa já é solicitada
+   a compartilhar a localização (mesmo pedido de permissão usado
+   no botão "Solicitar Guincho") e, assim que aceitar, o
+   WhatsApp já abre direto com a mensagem e o link do mapa
+   prontos — sem precisar clicar 2 vezes.
+
+   Se a pessoa recusar a localização ou o navegador não suportar,
+   o WhatsApp ainda assim abre normalmente (só que sem a
+   localização), pra nenhum botão ficar quebrado.
+========================================================== */
+
+function montarMensagemWhatsapp(latitude, longitude){
+
+    if(latitude !== undefined && longitude !== undefined){
+
+        return
+`Olá! Vim pelo site da Fabinho Guinchos e preciso de um guincho.
+
+Minha localização é:
+https://www.google.com/maps?q=${latitude},${longitude}`;
+
+    }
+
+    return "Olá! Vim pelo site da Fabinho Guinchos e preciso de um guincho.";
+
+}
+
+function abrirWhatsappComLocalizacao(numero, hrefOriginal){
+
+    function abrir(latitude, longitude){
+
+        const mensagem = montarMensagemWhatsapp(latitude, longitude);
+
+        const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`;
+
+        window.open(url, "_blank", "noopener,noreferrer");
+
+    }
+
+    if(!navigator.geolocation){
+
+        window.open(hrefOriginal, "_blank", "noopener,noreferrer");
+
+        return;
+
+    }
+
+    navigator.geolocation.getCurrentPosition(
+
+        posicao=>{
+
+            abrir(posicao.coords.latitude, posicao.coords.longitude);
+
+        },
+
+        ()=>{
+
+            /* Localização negada/indisponível: abre o WhatsApp
+               mesmo assim, só sem a localização */
+
+            abrir();
+
+        },
+
+        {
+
+            enableHighAccuracy:true,
+
+            timeout:8000,
+
+            maximumAge:0
+
+        }
+
+    );
+
+}
+
+document.querySelectorAll('a[href^="https://wa.me/"]').forEach(link=>{
+
+    link.addEventListener("click", event=>{
+
+        event.preventDefault();
+
+        const numero = "5511935052743";
+
+        abrirWhatsappComLocalizacao(numero, link.href);
+
+    });
+
+});
+
+/* ==========================================================
    CALCULAR ROTA ATÉ A EMPRESA (página atendimento.html)
 
    Usa a localização atual da pessoa (com permissão dela) e
