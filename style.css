@@ -612,6 +612,60 @@ body.menu-open{
 
 }
 
+.logo-text{
+
+    display:inline-block;
+
+    max-width:0;
+
+    margin-left:0;
+
+    overflow:hidden;
+
+    white-space:nowrap;
+
+    opacity:0;
+
+    color:#FFFFFF;
+
+    font-weight:700;
+
+    font-size:1.05rem;
+
+    letter-spacing:.01em;
+
+    transform:translateX(-8px);
+
+    transition:
+        max-width .35s ease,
+        margin-left .35s ease,
+        opacity .25s ease,
+        transform .35s ease,
+        color var(--transition);
+
+}
+
+.logo:hover .logo-text,
+.logo:focus-visible .logo-text,
+.logo:active .logo-text,
+.logo.is-active .logo-text{
+
+    max-width:140px;
+
+    margin-left:12px;
+
+    opacity:1;
+
+    transform:translateX(0);
+
+}
+
+.header.scrolled .logo-text{
+
+    color:var(--color-dark);
+
+}
+
 
 /* ===================================================================
    NAVBAR
