@@ -217,8 +217,6 @@ table{
 
     --z-overlay:50;
 
-    --z-dropdown:100;
-
     --z-sticky:500;
 
     --z-header:1150;
@@ -316,48 +314,6 @@ table{
 
 
 /* ===================================================================
-   06. GRID
-=================================================================== */
-
-.grid{
-
-    display:grid;
-
-}
-
-.grid-2{
-
-    display:grid;
-
-    grid-template-columns:repeat(2,1fr);
-
-    gap:48px;
-
-}
-
-.grid-3{
-
-    display:grid;
-
-    grid-template-columns:repeat(3,1fr);
-
-    gap:32px;
-
-}
-
-.grid-4{
-
-    display:grid;
-
-    grid-template-columns:repeat(4,1fr);
-
-    gap:28px;
-
-}
-
-
-
-/* ===================================================================
    07. BOTÕES
 =================================================================== */
 
@@ -418,88 +374,6 @@ table{
     background:var(--color-primary);
 
     color:#FFF;
-
-}
-
-
-
-/* ===================================================================
-   08. CARDS
-=================================================================== */
-
-.card{
-
-    background:#FFF;
-
-    border:1px solid var(--color-gray-200);
-
-    border-radius:20px;
-
-    box-shadow:var(--shadow-sm);
-
-    transition:var(--transition);
-
-}
-
-.card:hover{
-
-    transform:translateY(-8px);
-
-    box-shadow:var(--shadow-lg);
-
-}
-
-
-
-/* ===================================================================
-   09. UTILITÁRIOS
-=================================================================== */
-
-.text-center{
-
-    text-align:center;
-
-}
-
-.text-left{
-
-    text-align:left;
-
-}
-
-.mt-1{
-
-    margin-top:1rem;
-
-}
-
-.mt-2{
-
-    margin-top:2rem;
-
-}
-
-.mt-3{
-
-    margin-top:3rem;
-
-}
-
-.mb-1{
-
-    margin-bottom:1rem;
-
-}
-
-.mb-2{
-
-    margin-bottom:2rem;
-
-}
-
-.mb-3{
-
-    margin-bottom:3rem;
 
 }
 
@@ -593,18 +467,6 @@ table{
 
 }
 
-.fade-up{
-
-    animation:fadeUp .8s ease both;
-
-}
-
-.fade{
-
-    animation:fadeIn .8s ease both;
-
-}
-
 
 
 /* ===================================================================
@@ -638,28 +500,6 @@ body.menu-open{
 
 }
 
-.sr-only{
-
-    position:absolute;
-
-    width:1px;
-
-    height:1px;
-
-    padding:0;
-
-    margin:-1px;
-
-    overflow:hidden;
-
-    clip:rect(0,0,0,0);
-
-    white-space:nowrap;
-
-    border:0;
-
-}
-
 /* ===================================================================
    SVG
 =================================================================== */
@@ -671,14 +511,6 @@ body.menu-open{
     height:24px;
 
     flex-shrink:0;
-
-}
-
-.icon-lg{
-
-    width:40px;
-
-    height:40px;
 
 }
 
@@ -1131,73 +963,6 @@ body.menu-open{
 
 
 /* ===================================================================
-   DROPDOWN
-=================================================================== */
-
-.navbar li{
-
-    position:relative;
-
-}
-
-.dropdown{
-
-    position:absolute;
-
-    top:100%;
-
-    left:0;
-
-    min-width:220px;
-
-    padding:14px;
-
-    border-radius:18px;
-
-    background:#FFFFFF;
-
-    box-shadow:var(--shadow-lg);
-
-    opacity:0;
-
-    visibility:hidden;
-
-    transform:translateY(12px);
-
-    transition:var(--transition);
-
-}
-
-.navbar li:hover .dropdown{
-
-    opacity:1;
-
-    visibility:visible;
-
-    transform:translateY(0);
-
-}
-
-.dropdown a{
-
-    display:block;
-
-    padding:12px;
-
-    color:var(--color-dark);
-
-    border-radius:12px;
-
-}
-
-.dropdown a:hover{
-
-    background:var(--color-gray-100);
-
-}
-
-
-/* ===================================================================
    HEADER HOVER
 =================================================================== */
 
@@ -1267,24 +1032,6 @@ body.menu-open{
     background-repeat: no-repeat;
     background-attachment: scroll;
 
-}
-
-
-/* ===================================================================
-   BACKGROUND
-=================================================================== */
-
-.hero-background{
-    position:absolute;
-    inset:0;
-    z-index:var(--z-background);
-}
-
-.hero-background img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    object-position:center;
 }
 
 
@@ -1432,61 +1179,6 @@ body.menu-open{
 
 
 /* ===================================================================
-   BENEFITS
-=================================================================== */
-
-.hero-list{
-
-    display:grid;
-
-    grid-template-columns:repeat(2,minmax(220px,1fr));
-
-    gap:18px;
-
-    margin-top:8px;
-
-}
-
-.hero-list li{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:14px;
-
-    color:#FFFFFF;
-
-    font-weight:600;
-
-}
-
-.hero-list li::before{
-
-    content:"✓";
-
-    display:grid;
-
-    place-items:center;
-
-    width:28px;
-
-    height:28px;
-
-    border-radius:50%;
-
-    background:rgba(249,115,22,.18);
-
-    color:var(--color-primary);
-
-    font-size:.9rem;
-
-    font-weight:700;
-
-}
-
-
-/* ===================================================================
    BUTTONS
 =================================================================== */
 
@@ -1612,246 +1304,6 @@ body.menu-open{
 
     font-size:1rem;
 
-}   
-
-/* ===================================================================
-   HERO INFO
-=================================================================== */
-
-.hero-info{
-
-    display:flex;
-
-    flex-wrap:wrap;
-
-    gap:28px;
-
-    margin-top:24px;
-
-}
-
-.hero-info-item{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:12px;
-
-}
-
-.hero-info-icon{
-
-    display:grid;
-
-    place-items:center;
-
-    width:52px;
-
-    height:52px;
-
-    border-radius:18px;
-
-    background:rgba(255,255,255,.08);
-
-    border:1px solid rgba(255,255,255,.14);
-
-}
-
-.hero-info-text{
-
-    display:flex;
-
-    flex-direction:column;
-
-}
-
-.hero-info-text strong{
-
-    color:#FFFFFF;
-
-    font-size:1rem;
-
-}
-
-.hero-info-text span{
-
-    color:rgba(255,255,255,.72);
-
-    font-size:.92rem;
-
-}
-
-
-/* ===================================================================
-   SCROLL INDICATOR
-=================================================================== */
-
-.hero-scroll{
-
-    position:absolute;
-
-    left:50%;
-
-    bottom:36px;
-
-    transform:translateX(-50%);
-
-    z-index:10;
-
-}
-
-.hero-scroll a{
-
-    display:flex;
-
-    flex-direction:column;
-
-    align-items:center;
-
-    gap:10px;
-
-    color:#FFFFFF;
-
-    font-size:.82rem;
-
-    opacity:.85;
-
-    transition:var(--transition);
-
-}
-
-.hero-scroll a:hover{
-
-    opacity:1;
-
-}
-
-.hero-scroll span{
-
-    width:28px;
-
-    height:46px;
-
-    border:2px solid rgba(255,255,255,.5);
-
-    border-radius:999px;
-
-    position:relative;
-
-}
-
-.hero-scroll span::before{
-
-    content:"";
-
-    position:absolute;
-
-    left:50%;
-
-    top:8px;
-
-    width:6px;
-
-    height:6px;
-
-    border-radius:50%;
-
-    background:#FFFFFF;
-
-    transform:translateX(-50%);
-
-    animation:scrollMouse 2s infinite;
-
-}
-
-
-/* ===================================================================
-   TRUST BAR
-=================================================================== */
-
-.hero-trust{
-
-    position:absolute;
-
-    left:50%;
-
-    bottom:0;
-
-    transform:translate(-50%,50%);
-
-    width:min(1180px,calc(100% - 48px));
-
-    background:#FFFFFF;
-
-    border-radius:24px;
-
-    box-shadow:var(--shadow-lg);
-
-    z-index:15;
-
-}
-
-.trust-list{
-
-    display:grid;
-
-    grid-template-columns:repeat(4,1fr);
-
-}
-
-.trust-list li{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:18px;
-
-    padding:30px;
-
-    border-right:1px solid var(--color-gray-200);
-
-}
-
-.trust-list li:last-child{
-
-    border-right:none;
-
-}
-
-.trust-icon{
-
-    width:62px;
-
-    height:62px;
-
-    border-radius:18px;
-
-    display:grid;
-
-    place-items:center;
-
-    background:#FFF4ED;
-
-}
-
-.trust-list strong{
-
-    display:block;
-
-    margin-bottom:4px;
-
-    color:var(--color-dark);
-
-}
-
-.trust-list span{
-
-    color:var(--color-gray-500);
-
-    font-size:.92rem;
-
 }
 
 
@@ -1877,27 +1329,9 @@ body.menu-open{
 
 }
 
-.hero-list{
-
-    animation:fadeUp .7s ease .65s both;
-
-}
-
 .hero-buttons{
 
     animation:fadeUp .7s ease .8s both;
-
-}
-
-.hero-info{
-
-    animation:fadeUp .7s ease .95s both;
-
-}
-
-.hero-scroll{
-
-    animation:fadeIn 1.2s ease 1.2s both;
 
 }
 
@@ -1932,53 +1366,6 @@ body.menu-open{
 
     }
 
-}
-
-/* ===================================================================
-   17. DIFERENCIAIS
-=================================================================== */
-
-.differentials{
-    background:var(--color-gray-50);
-}
-
-.differentials-grid{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:28px;
-}
-
-.differential-card{
-    background:#FFF;
-    border-radius:22px;
-    padding:38px 30px;
-    border:1px solid var(--color-gray-200);
-    box-shadow:var(--shadow-sm);
-    transition:var(--transition);
-    text-align:center;
-}
-
-.differential-card:hover{
-    transform:translateY(-8px);
-    box-shadow:var(--shadow-lg);
-}
-
-.differential-icon{
-    width:72px;
-    height:72px;
-    margin:0 auto 24px;
-    border-radius:20px;
-    display:grid;
-    place-items:center;
-    background:#FFF4ED;
-}
-
-.differential-card h3{
-    margin-bottom:14px;
-}
-
-.differential-card p{
-    color:var(--color-gray-500);
 }
 
 /* ===================================================================
@@ -2074,100 +1461,6 @@ body.menu-open{
 
 .service-card p{
     margin-bottom:20px;
-}
-
-.service-link{
-    display:inline-flex;
-    align-items:center;
-    gap:10px;
-    color:var(--color-primary);
-    font-weight:600;
-}
-
-/* ===================================================================
-   20. ÁREA DE ATENDIMENTO
-=================================================================== */
-
-.area-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:70px;
-    align-items:center;
-}
-
-.area-map img{
-    width:100%;
-    border-radius:24px;
-    box-shadow:var(--shadow-lg);
-}
-
-.city-list{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:18px;
-    margin-top:32px;
-}
-
-.city-list li{
-    display:flex;
-    align-items:center;
-    gap:14px;
-    padding:18px;
-    background:#FFF;
-    border:1px solid var(--color-gray-200);
-    border-radius:18px;
-}
-
-.city-list li::before{
-    content:"📍";
-}
-
-/* ===================================================================
-   21. COMO FUNCIONA
-=================================================================== */
-
-.timeline{
-    position:relative;
-    max-width:900px;
-    margin:auto;
-}
-
-.timeline::before{
-    content:"";
-    position:absolute;
-    left:36px;
-    top:0;
-    bottom:0;
-    width:3px;
-    background:var(--color-primary);
-}
-
-.timeline-item{
-    position:relative;
-    padding-left:110px;
-    margin-bottom:60px;
-}
-
-.timeline-number{
-    position:absolute;
-    left:0;
-    width:72px;
-    height:72px;
-    border-radius:50%;
-    background:var(--color-primary);
-    color:#FFF;
-    display:grid;
-    place-items:center;
-    font-size:1.2rem;
-    font-weight:700;
-}
-
-.timeline-content{
-    background:#FFF;
-    border-radius:22px;
-    padding:30px;
-    border:1px solid var(--color-gray-200);
-    box-shadow:var(--shadow-sm);
 }
 
 /* ===================================================================
@@ -2275,35 +1568,12 @@ body.menu-open{
     background:var(--color-gray-50);
 }
 
-.faq-container{
-    max-width:900px;
-    margin:auto;
-}
-
 .faq-item{
     background:#FFF;
     border-radius:20px;
     margin-bottom:20px;
     border:1px solid var(--color-gray-200);
     overflow:hidden;
-}
-
-.faq-question{
-    width:100%;
-    padding:28px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    font-weight:600;
-}
-
-.faq-answer{
-    padding:0 28px 28px;
-    display:none;
-}
-
-.faq-item.active .faq-answer{
-    display:block;
 }
 
 /* ===================================================================
@@ -2397,13 +1667,10 @@ body.menu-open{
 a,
 button,
 .btn,
-.card,
 .service-card,
-.differential-card,
 .payment-card,
 .testimonial-card,
-.faq-item,
-.timeline-content{
+.faq-item{
 
     transition:
         transform .35s ease,
@@ -2420,11 +1687,9 @@ button,
    Hover elegante
 ------------------------------*/
 
-.card:hover,
 .service-card:hover,
 .payment-card:hover,
-.testimonial-card:hover,
-.timeline-content:hover{
+.testimonial-card:hover{
 
     transform:
         translateY(-10px);
@@ -2461,20 +1726,6 @@ img{
     min-height:340px;
 
     object-fit:cover;
-
-}
-
-.area-map{
-
-    overflow:hidden;
-
-    border-radius:24px;
-
-}
-
-.area-map:hover img{
-
-    transform:scale(1.03);
 
 }
 
@@ -2564,44 +1815,6 @@ img{
 
 }
 
-
-/* ===================================================================
-   31. GLASS COMPONENTS
-=================================================================== */
-
-.glass{
-
-    background:
-
-        rgba(255,255,255,.55);
-
-    backdrop-filter:
-
-        blur(16px);
-
-    -webkit-backdrop-filter:
-
-        blur(16px);
-
-    border:
-
-        1px solid rgba(255,255,255,.3);
-
-}
-
-
-/* ===================================================================
-   32. FLOATING SHADOW
-=================================================================== */
-
-.float{
-
-    animation:
-
-        floating 4s ease-in-out infinite;
-
-}
-
 @keyframes floating{
 
     0%{
@@ -2629,84 +1842,6 @@ img{
     }
 
 }
-
-
-/* ===================================================================
-   33. FADE ANIMATION
-=================================================================== */
-
-.fade-in{
-
-    opacity:0;
-
-    transform:
-
-        translateY(40px);
-
-}
-
-.fade-in.show{
-
-    opacity:1;
-
-    transform:
-
-        translateY(0);
-
-    transition:
-
-        opacity .8s ease,
-
-        transform .8s ease;
-
-}
-
-
-/* ===================================================================
-   34. BADGES
-=================================================================== */
-
-.badge{
-
-    display:inline-flex;
-
-    align-items:center;
-
-    gap:8px;
-
-    padding:8px 16px;
-
-    border-radius:999px;
-
-    background:#FFF4ED;
-
-    color:var(--color-primary);
-
-    font-weight:600;
-
-}
-
-
-/* ===================================================================
-   35. ICON BOX
-=================================================================== */
-
-.icon-box{
-
-    width:64px;
-
-    height:64px;
-
-    border-radius:18px;
-
-    display:grid;
-
-    place-items:center;
-
-    background:#FFF4ED;
-
-}
-
 
 /* ===================================================================
    36. WHATSAPP FLOAT
@@ -2823,321 +1958,6 @@ img{
 
 }
 
-
-/* ===================================================================
-   39. UTILITÁRIOS PREMIUM
-=================================================================== */
-
-.shadow-hover:hover{
-
-    box-shadow:var(--shadow-xl);
-
-}
-
-.rounded{
-
-    border-radius:24px;
-
-}
-
-.blur{
-
-    backdrop-filter:blur(12px);
-
-}
-
-.overflow-hidden{
-
-    overflow:hidden;
-
-}
-
-.w-100{
-
-    width:100%;
-
-}
-
-.h-100{
-
-    height:100%;
-
-}
-
-/* ===================================================================
-   29. GUINCHO INTERATIVO (QUEM SOMOS)
-=================================================================== */
-
-.about-image{
-
-    isolation:isolate;
-
-}
-
-.tow-truck-trigger{
-
-    position:absolute;
-    right:20px;
-    bottom:20px;
-    width:56px;
-    height:56px;
-    display:grid;
-    place-items:center;
-    border:none;
-    border-radius:50%;
-    background:var(--color-primary);
-    color:var(--color-white);
-    cursor:pointer;
-    box-shadow:var(--shadow-lg);
-    z-index:2;
-
-}
-
-.tow-truck-trigger-icon{
-
-    width:26px;
-    height:26px;
-
-}
-
-.tow-truck-trigger::before{
-
-    content:"";
-    position:absolute;
-    inset:-6px;
-    border-radius:50%;
-    border:2px solid var(--color-primary);
-    opacity:.6;
-    animation:towPulse 2s ease-out infinite;
-
-}
-
-.tow-truck-trigger:hover{
-
-    background:var(--color-primary-dark);
-    transform:scale(1.06);
-
-}
-
-.tow-truck-trigger:focus-visible{
-
-    outline:3px solid var(--color-primary-dark);
-    outline-offset:3px;
-
-}
-
-.tow-truck-trigger.is-disabled{
-
-    pointer-events:none;
-    opacity:.55;
-
-}
-
-.tow-truck-trigger.is-disabled::before{
-
-    animation:none;
-    opacity:0;
-
-}
-
-@keyframes towPulse{
-
-    0%{
-        transform:scale(1);
-        opacity:.6;
-    }
-
-    100%{
-        transform:scale(1.35);
-        opacity:0;
-    }
-
-}
-
-.tow-truck-hint{
-
-    position:absolute;
-    left:20px;
-    bottom:20px;
-    max-width:calc(100% - 110px);
-    padding:8px 14px;
-    border-radius:999px;
-    background:rgba(17,24,39,.72);
-    color:var(--color-white);
-    font-size:.8rem;
-    font-weight:500;
-    z-index:2;
-    pointer-events:none;
-
-}
-
-/* -----------------------------
-   Camada da animação (fixa,
-   nao interfere no layout/texto)
-------------------------------*/
-
-.tow-scene{
-
-    position:fixed;
-    left:0;
-    top:50%;
-    width:100vw;
-    height:0;
-    pointer-events:none;
-    z-index:2050;
-
-}
-
-.tow-rig{
-
-    position:absolute;
-    left:0;
-    top:0;
-    width:300px;
-    transform:translate(-130%,-50%);
-    opacity:0;
-    filter:drop-shadow(0 12px 18px rgba(15,23,42,.35));
-
-}
-
-.tow-rig svg{
-
-    width:100%;
-    height:auto;
-    display:block;
-
-}
-
-.tow-scene.is-active .tow-rig{
-
-     animation: towDriveAcross 3.6s linear forwards;
-
-}
-
-@keyframes towDriveAcross{
-
-    0%{
-        transform:translate(-130%,-50%) rotate(0deg);
-        opacity:0;
-    }
-
-    6%{
-        opacity:1;
-    }
-
-    18%{
-        transform:translate(calc(-8vw),-53%) rotate(-1deg);
-    }
-
-    38%{
-        transform:translate(calc(28vw),-47%) rotate(1deg);
-    }
-
-    58%{
-        transform:translate(calc(58vw),-53%) rotate(-1deg);
-    }
-
-    78%{
-        transform:translate(calc(88vw),-47%) rotate(1deg);
-    }
-
-    92%{
-        opacity:1;
-    }
-
-    100%{
-        transform:translate(calc(118vw),-50%) rotate(0deg);
-        opacity:0;
-    }
-
-}
-
-.tow-wheel{
-
-    transform-box:fill-box;
-    transform-origin:center;
-    animation:towWheelSpin .6s linear infinite;
-    animation-play-state:paused;
-
-}
-
-.tow-light-bar{
-
-    animation:towLightBlink .5s steps(2) infinite;
-    animation-play-state:paused;
-
-}
-
-.tow-scene.is-active .tow-wheel,
-.tow-scene.is-active .tow-light-bar{
-
-    animation-play-state:running;
-
-}
-
-@keyframes towWheelSpin{
-
-    to{
-        transform:rotate(360deg);
-    }
-
-}
-
-@keyframes towLightBlink{
-
-    0%,100%{
-        opacity:1;
-    }
-
-    50%{
-        opacity:.25;
-    }
-
-}
-
-@media (prefers-reduced-motion:reduce){
-
-    .tow-truck-trigger::before{
-
-        animation:none;
-        opacity:0;
-
-    }
-
-    .tow-scene.is-active .tow-rig{
-
-        animation:towFadeInPlace 1.4s ease forwards;
-
-    }
-
-    .tow-scene.is-active .tow-wheel,
-    .tow-scene.is-active .tow-light-bar{
-
-        animation:none;
-
-    }
-
-}
-
-@keyframes towFadeInPlace{
-
-    0%{
-        transform:translate(-50%,-50%);
-        opacity:0;
-    }
-
-    50%{
-        opacity:1;
-    }
-
-    100%{
-        transform:translate(-50%,-50%);
-        opacity:0;
-    }
-
-}
-
-
 /* ===================================================================
    30. MELHORIAS DE DESIGN — HERO (imagem + badge flutuante)
 =================================================================== */
@@ -3148,80 +1968,6 @@ img{
     grid-template-columns:1.05fr .95fr;
     gap:64px;
     align-items:center;
-
-}
-
-.hero-image{
-
-    position:relative;
-
-}
-
-.hero-image-media{
-
-    position:relative;
-    border-radius:28px;
-    overflow:hidden;
-    min-height:460px;
-    background:
-        linear-gradient(135deg,rgba(249,115,22,.45),rgba(17,24,39,.8));
-    box-shadow:var(--shadow-xl);
-    border:1px solid rgba(255,255,255,.14);
-
-}
-
-.hero-image-media img{
-
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    min-height:460px;
-
-}
-
-.hero-image-badge{
-
-    position:absolute;
-    left:-24px;
-    bottom:-24px;
-    display:flex;
-    align-items:center;
-    gap:14px;
-    background:#FFFFFF;
-    padding:18px 22px;
-    border-radius:20px;
-    box-shadow:var(--shadow-lg);
-    z-index:2;
-
-}
-
-.hero-image-badge strong{
-
-    font-size:2rem;
-    font-weight:800;
-    color:var(--color-dark);
-    line-height:1;
-
-}
-
-.hero-image-badge span{
-
-    display:flex;
-    flex-direction:column;
-    gap:2px;
-    color:#F59E0B;
-    font-size:.85rem;
-    font-weight:700;
-    letter-spacing:.04em;
-
-}
-
-.hero-image-badge span small{
-
-    color:var(--color-gray-500);
-    font-weight:600;
-    font-size:.72rem;
-    letter-spacing:0;
 
 }
 
@@ -4125,11 +2871,6 @@ strong{
         padding-top:calc(var(--header-height) + 24px);
     }
 
-    .hero-list{
-        grid-template-columns:1fr;
-        width:100%;
-    }
-
     /* Indicadores */
     .highlights{
         margin-top:-40px;
@@ -4601,10 +3342,6 @@ strong{
 
     h2{
         font-size:clamp(1.4rem,1.1rem + 3vw,1.7rem);
-    }
-
-    .hero-list li{
-        font-size:.92rem;
     }
 
     .payments-grid{
@@ -5365,72 +4102,6 @@ strong{
 
     .btn {
         max-height: 50px;
-    }
-
-}
-
-/* ===================================================================
-   46. MISSÃO, VISÃO E VALORES (página historia.html)
-=================================================================== */
-
-.values-grid{
-
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:28px;
-
-}
-
-.value-card{
-
-    background:#FFFFFF;
-    border:1px solid var(--color-gray-200);
-    border-radius:20px;
-    padding:36px 30px;
-    text-align:center;
-    transition:var(--transition);
-
-}
-
-.value-card:hover{
-
-    border-color:var(--color-primary);
-    box-shadow:var(--shadow-md);
-    transform:translateY(-4px);
-
-}
-
-.value-icon{
-
-    display:inline-grid;
-    place-items:center;
-    width:64px;
-    height:64px;
-    margin-bottom:20px;
-    border-radius:16px;
-    background:#FFF4ED;
-    color:var(--color-primary);
-
-}
-
-.value-card h3{
-
-    margin-bottom:10px;
-
-}
-
-.value-card p{
-
-    color:var(--color-gray-500);
-    font-size:.95rem;
-
-}
-
-@media (max-width:860px){
-
-    .values-grid{
-        grid-template-columns:1fr;
-        gap:20px;
     }
 
 }
