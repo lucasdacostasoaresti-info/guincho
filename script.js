@@ -69,6 +69,8 @@ function updateHeader(){
 
 function openMenu(){
 
+    document.documentElement.classList.add("menu-open");
+
     body.classList.add("menu-open");
 
     menuToggle?.classList.add("active");
@@ -82,6 +84,8 @@ function openMenu(){
 }
 
 function closeMenu(){
+
+    document.documentElement.classList.remove("menu-open");
 
     body.classList.remove("menu-open");
 
@@ -890,6 +894,21 @@ document.querySelectorAll('a[href^="https://wa.me/"]').forEach(link=>{
         abrirWhatsappComLocalizacao(numero, link.href);
 
     });
+
+});
+
+/* Botão "Solicitar Guincho Agora" (não é um link wa.me, é um
+   <button> — por isso precisa de um listener próprio aqui) */
+
+const btnGuincho = document.getElementById("btnGuincho");
+
+btnGuincho?.addEventListener("click", ()=>{
+
+    const numero = "5511947309527";
+
+    const hrefOriginal = `https://wa.me/${numero}`;
+
+    abrirWhatsappComLocalizacao(numero, hrefOriginal);
 
 });
 
