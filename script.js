@@ -422,7 +422,7 @@ const map = L.map("map",{
 
 L.tileLayer(
 
-    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.webp",
 
     {
 
@@ -440,7 +440,7 @@ L.tileLayer(
 
 const iconeEmpresa = L.icon({
 
-    iconUrl:"img/logo.png",
+    iconUrl:"img/logo.webp",
 
     iconSize:[50,50],
 
@@ -452,7 +452,7 @@ const iconeEmpresa = L.icon({
 
 const iconeCidade = L.icon({
     
-    iconUrl:"img/logo-icone.png",
+    iconUrl:"img/logo-icone.webp",
 
     iconSize:[50,50],
 
