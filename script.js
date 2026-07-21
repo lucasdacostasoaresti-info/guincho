@@ -440,7 +440,7 @@ L.tileLayer(
 
 const iconeEmpresa = L.icon({
 
-    iconUrl:"img/logo.webpw",
+    iconUrl:"img/logo.webp",
 
     iconSize:[50,50],
 
