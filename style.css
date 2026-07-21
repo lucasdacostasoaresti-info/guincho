@@ -3760,6 +3760,63 @@ strong{
 }
 
 /* ===================================================================
+   40b. BREADCRUMB (navegação estrutural - SEO + orientação do usuário)
+=================================================================== */
+
+.breadcrumb{
+
+    position:relative;
+    z-index:2;
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:8px;
+    margin:0 0 12px;
+    padding:0;
+    list-style:none;
+    font-size:13px;
+    font-weight:500;
+
+}
+
+.breadcrumb li{
+
+    display:flex;
+    align-items:center;
+    gap:8px;
+
+}
+
+.breadcrumb li:not(:last-child)::after{
+
+    content:"/";
+    color:rgba(255,255,255,.45);
+
+}
+
+.breadcrumb a{
+
+    color:rgba(255,255,255,.75);
+    text-decoration:none;
+    transition:color .2s ease;
+
+}
+
+.breadcrumb a:hover,
+.breadcrumb a:focus-visible{
+
+    color:var(--color-primary-light);
+    text-decoration:underline;
+
+}
+
+.breadcrumb li[aria-current="page"]{
+
+    color:#FFFFFF;
+
+}
+
+/* ===================================================================
    41. SEÇÃO DE CONTATO
 =================================================================== */
 

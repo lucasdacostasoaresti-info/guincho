@@ -1,0 +1,24 @@
+{
+  "name": "Fabinho Guinchos - Guincho 24 Horas em Guarulhos",
+  "short_name": "Fabinho Guinchos",
+  "description": "Guincho 24 horas em Guarulhos e região. Reboque leve, pesado e socorro mecânico.",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#F97316",
+  "lang": "pt-BR",
+  "icons": [
+    {
+      "src": "img/logo-icone.webp",
+      "sizes": "192x192",
+      "type": "image/webp",
+      "purpose": "any"
+    },
+    {
+      "src": "img/logo.webp",
+      "sizes": "512x512",
+      "type": "image/webp",
+      "purpose": "any"
+    }
+  ]
+}

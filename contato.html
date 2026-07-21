@@ -42,6 +42,16 @@
     <meta
         name="robots"
         content="index,follow">
+
+    <!-- ===========================
+         CANONICAL / IDIOMA / PWA
+    ============================ -->
+
+    <link rel="canonical" href="https://www.fabinhoguinchos.com.br/contato.html">
+    <link rel="alternate" hreflang="pt-BR" href="https://www.fabinhoguinchos.com.br/contato.html">
+    <link rel="alternate" hreflang="x-default" href="https://www.fabinhoguinchos.com.br/contato.html">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="apple-touch-icon" href="img/logo-icone.webp">
     <!-- ===========================
          OPEN GRAPH
     ============================ -->
@@ -60,11 +70,28 @@
 
     <meta
         property="og:image"
-        content="img/og-image.jpg">
+        content="https://www.fabinhoguinchos.com.br/img/og-image.jpg">
+
+    <meta
+        property="og:url"
+        content="https://www.fabinhoguinchos.com.br/contato.html">
+
+    <meta
+        property="og:site_name"
+        content="Fabinho Guinchos">
 
     <meta
         property="og:locale"
         content="pt_BR">
+
+    <!-- ===========================
+         TWITTER CARD
+    ============================ -->
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Contato | Fabinho Guinchos">
+    <meta name="twitter:description" content="Fale com a Fabinho Guinchos pelo WhatsApp, telefone ou formulário. Atendimento 24 horas.">
+    <meta name="twitter:image" content="https://www.fabinhoguinchos.com.br/img/og-image.jpg">
     <!-- ===========================
          GOOGLE FONTS
     ============================ -->
@@ -124,6 +151,31 @@
         name="referrer"
         content="strict-origin-when-cross-origin">
 
+
+    <!-- ===========================
+         DADOS ESTRUTURADOS (JSON-LD)
+    ============================ -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "ContactPage",
+          "@id": "https://www.fabinhoguinchos.com.br/contato.html#webpage",
+          "url": "https://www.fabinhoguinchos.com.br/contato.html",
+          "name": "Contato | Fabinho Guinchos",
+          "about": { "@id": "https://www.fabinhoguinchos.com.br/#organization" }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Início", "item": "https://www.fabinhoguinchos.com.br/" },
+            { "@type": "ListItem", "position": 2, "name": "Contato", "item": "https://www.fabinhoguinchos.com.br/contato.html" }
+          ]
+        }
+      ]
+    }
+    </script>
 </head>
 
 <body>
@@ -293,13 +345,20 @@ BANNER DA PÁGINA
 
         <img
             src="img/foto-7.webp"
-            alt="Equipe da Fabinho Guinchos">
+            alt="Equipe da Fabinho Guinchos"
+            fetchpriority="high"
+            decoding="async">
 
     </div>
 
     <div class="page-banner-overlay"></div>
 
     <div class="container page-banner-content">
+
+<ol class="breadcrumb" aria-label="Breadcrumb">
+            <li><a href="index.html">Início</a></li>
+            <li aria-current="page">Contato</li>
+        </ol>
 
         <span class="hero-badge">
 
@@ -546,7 +605,9 @@ FOOTER
                 <img
                     src="img/logo.webp"
                     alt="Fabinho Guinchos"
-                    class="footer-logo">
+                    class="footer-logo"
+                    loading="lazy"
+                    decoding="async">
 
                 <p>
 
@@ -678,7 +739,8 @@ WHATSAPP FLOAT
 
       <img
             src="img/whatsapp.webp"
-            alt="Chamar no WhatsApp">
+            alt="Chamar no WhatsApp"
+            decoding="async">
 
 
 </a>
@@ -693,7 +755,9 @@ BACK TO TOP
 
          <img
             src="img/logo-icone.webp"
-            alt="Seta para voltar ao topo">
+            alt="Seta para voltar ao topo"
+            loading="lazy"
+            decoding="async">
 
 </button>
 

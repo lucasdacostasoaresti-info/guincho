@@ -44,6 +44,16 @@
         content="index,follow">
 
     <!-- ===========================
+         CANONICAL / IDIOMA / PWA
+    ============================ -->
+
+    <link rel="canonical" href="https://www.fabinhoguinchos.com.br/quem-somos.html">
+    <link rel="alternate" hreflang="pt-BR" href="https://www.fabinhoguinchos.com.br/quem-somos.html">
+    <link rel="alternate" hreflang="x-default" href="https://www.fabinhoguinchos.com.br/quem-somos.html">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="apple-touch-icon" href="img/logo-icone.webp">
+
+    <!-- ===========================
          SEGURANÇA
     ============================ -->
 
@@ -72,11 +82,28 @@
 
     <meta
         property="og:image"
-        content="img/og-image.jpg">
+        content="https://www.fabinhoguinchos.com.br/img/og-image.jpg">
+
+    <meta
+        property="og:url"
+        content="https://www.fabinhoguinchos.com.br/quem-somos.html">
+
+    <meta
+        property="og:site_name"
+        content="Fabinho Guinchos">
 
     <meta
         property="og:locale"
         content="pt_BR">
+
+    <!-- ===========================
+         TWITTER CARD
+    ============================ -->
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Quem Somos | Fabinho Guinchos">
+    <meta name="twitter:description" content="Conheça a história, a missão, a visão e os valores da Fabinho Guinchos.">
+    <meta name="twitter:image" content="https://www.fabinhoguinchos.com.br/img/og-image.jpg">
     <!-- ===========================
          GOOGLE FONTS
     ============================ -->
@@ -104,6 +131,31 @@
         type="image/webp"
         href="img/logo.webp">
 
+
+    <!-- ===========================
+         DADOS ESTRUTURADOS (JSON-LD)
+    ============================ -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "AboutPage",
+          "@id": "https://www.fabinhoguinchos.com.br/quem-somos.html#webpage",
+          "url": "https://www.fabinhoguinchos.com.br/quem-somos.html",
+          "name": "Quem Somos | Fabinho Guinchos",
+          "about": { "@id": "https://www.fabinhoguinchos.com.br/#organization" }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Início", "item": "https://www.fabinhoguinchos.com.br/" },
+            { "@type": "ListItem", "position": 2, "name": "Quem Somos", "item": "https://www.fabinhoguinchos.com.br/quem-somos.html" }
+          ]
+        }
+      ]
+    }
+    </script>
 </head>
 
 <body>
@@ -273,13 +325,20 @@ BANNER DA PÁGINA
 
         <img
             src="img/foto-2.webp"
-            alt="Equipe da Fabinho Guinchos">
+            alt="Equipe da Fabinho Guinchos"
+            fetchpriority="high"
+            decoding="async">
 
     </div>
 
     <div class="page-banner-overlay"></div>
 
     <div class="container page-banner-content">
+
+<ol class="breadcrumb" aria-label="Breadcrumb">
+            <li><a href="index.html">Início</a></li>
+            <li aria-current="page">Quem Somos</li>
+        </ol>
 
         <span class="hero-badge">
 
@@ -309,7 +368,9 @@ HISTÓRIA
 
                 <img
                     src="img/foto-13.webp"
-                    alt="Guincho da Fabinho Guinchos em atendimento">
+                    alt="Guincho da Fabinho Guinchos em atendimento"
+                    loading="lazy"
+                    decoding="async">
 
             </div>
 
@@ -474,7 +535,9 @@ MARCA
 
         <img
             src="img/logo.webp"
-            alt="Fabinho Guinchos">
+            alt="Fabinho Guinchos"
+            loading="lazy"
+            decoding="async">
 
         <p>Guincho 24 horas em Guarulhos e região</p>
 
@@ -497,7 +560,9 @@ FOOTER
                 <img
                     src="img/logo.webp"
                     alt="Fabinho Guinchos"
-                    class="footer-logo">
+                    class="footer-logo"
+                    loading="lazy"
+                    decoding="async">
 
                 <p>
 
@@ -629,7 +694,8 @@ WHATSAPP FLOAT
 
       <img
             src="img/whatsapp.webp"
-            alt="Chamar no WhatsApp">
+            alt="Chamar no WhatsApp"
+            decoding="async">
 
 
 </a>
@@ -644,7 +710,9 @@ BACK TO TOP
 
          <img
             src="img/logo-icone.webp"
-            alt="Seta para voltar ao topo">
+            alt="Seta para voltar ao topo"
+            loading="lazy"
+            decoding="async">
 
 </button>
 
