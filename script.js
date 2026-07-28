@@ -99,7 +99,7 @@ function closeMenu(){
 
 menuToggle?.addEventListener("click",()=>{
 
-    if(mobileMenu.classList.contains("active")){
+    if(mobileMenu?.classList.contains("active")){
 
         closeMenu();
 
@@ -221,15 +221,26 @@ navLinks.forEach(link=>{
 
 /* ==========================================================
    SCROLL EVENTS
+
+   Guardamos a função em uma variável (em vez de passar direto
+   uma função anônima pro addEventListener) só pra ser possível
+   removê-la de verdade mais abaixo, quando trocamos pela versão
+   com debounce. Sem isso, o removeEventListener não encontra
+   a função (precisa ser a mesma referência) e o listener antigo
+   fica rodando pra sempre, disparando em CADA pixel de scroll,
+   além do novo — desperdiçando processamento à toa, principalmente
+   em celulares mais fracos.
 ========================================================== */
 
-window.addEventListener("scroll",()=>{
+function handleScrollInicial(){
 
     updateHeader();
 
     updateBackToTop();
 
-});
+}
+
+window.addEventListener("scroll",handleScrollInicial);
 
 /* ==========================================================
    LOAD
@@ -340,9 +351,7 @@ const optimizedScroll = debounce(()=>{
 
 },5);
 
-window.removeEventListener("scroll",updateHeader);
-
-window.removeEventListener("scroll",updateBackToTop);
+window.removeEventListener("scroll",handleScrollInicial);
 
 window.addEventListener("scroll",optimizedScroll);
 
@@ -677,13 +686,30 @@ function abrirWhatsappComLocalizacao(numero, hrefOriginal){
        que a geolocalização responder (assíncrono), o Safari no
        iPhone bloqueia o window.open() silenciosamente — o botão
        parece não fazer nada. Por isso abrimos a aba em branco
-       AGORA e só preenchemos o endereço dela depois. */
+       AGORA e só preenchemos o endereço dela depois.
+
+       IMPORTANTE #2: aqui NÃO podemos passar "noopener" —
+       quando "noopener" é usado, o navegador sempre retorna
+       null no window.open(), e a gente perde justamente a
+       referência que precisa pra preencher o endereço da aba
+       mais tarde (isso já causou um bug: abria uma aba em
+       branco solta E navegava a aba atual, ao mesmo tempo). */
 
     let janela;
 
     try{
 
-        janela = window.open("", "_blank", "noopener,noreferrer");
+        janela = window.open("", "_blank");
+
+        if(janela){
+
+            /* Remove o acesso da aba nova de volta pra esta
+               página (mesmo efeito de segurança do "noopener",
+               só que sem perder a referência que precisamos) */
+
+            janela.opener = null;
+
+        }
 
     }catch(erro){
 
@@ -835,13 +861,23 @@ btnGuincho?.addEventListener("click", ()=>{
         /* Mesma correção do botão do WhatsApp: abre a aba AGORA,
            de forma síncrona no clique, e só preenche o endereço
            dela quando a localização responder. Evita o bloqueio
-           de pop-up assíncrono do Safari no iOS. */
+           de pop-up assíncrono do Safari no iOS.
+
+           Sem "noopener" aqui de propósito: com "noopener" o
+           window.open() sempre retorna null, e perdemos a
+           referência que precisamos pra preencher a URL depois. */
 
         let janela;
 
         try{
 
-            janela = window.open("", "_blank", "noopener,noreferrer");
+            janela = window.open("", "_blank");
+
+            if(janela){
+
+                janela.opener = null;
+
+            }
 
         }catch(erro){
 

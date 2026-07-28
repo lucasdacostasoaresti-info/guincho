@@ -1109,7 +1109,10 @@ body.menu-open{
     position:relative;
     display:flex;
     align-items:center;
-    min-height:100vh;
+    min-height:100vh; /* fallback para navegadores sem suporte a svh */
+    min-height:100svh; /* iOS Safari: evita que a barra de endereço
+                           empurre o botão principal pra fora da tela
+                           no primeiro carregamento */
     padding-top:calc(var(--header-height) + 40px);
     overflow:hidden;
     isolation:isolate;
