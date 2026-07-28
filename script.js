@@ -671,19 +671,57 @@ https://www.google.com/maps?q=${latitude},${longitude}`
 
 function abrirWhatsappComLocalizacao(numero, hrefOriginal){
 
+    /* IMPORTANTE (compatibilidade iOS/Safari):
+       A aba PRECISA ser aberta aqui, de forma síncrona, ainda
+       dentro do clique do usuário. Se abrirmos a aba só depois
+       que a geolocalização responder (assíncrono), o Safari no
+       iPhone bloqueia o window.open() silenciosamente — o botão
+       parece não fazer nada. Por isso abrimos a aba em branco
+       AGORA e só preenchemos o endereço dela depois. */
+
+    let janela;
+
+    try{
+
+        janela = window.open("", "_blank", "noopener,noreferrer");
+
+    }catch(erro){
+
+        janela = null;
+
+    }
+
+    function irPara(url){
+
+        if(janela && !janela.closed){
+
+            janela.location.href = url;
+
+        }else{
+
+            /* Pop-up foi bloqueado mesmo assim: como último
+               recurso, navega na própria aba pra o botão nunca
+               ficar sem resposta nenhuma. */
+
+            window.location.href = url;
+
+        }
+
+    }
+
     function abrir(latitude, longitude){
 
         const mensagem = montarMensagemWhatsapp(latitude, longitude);
 
         const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`;
 
-        window.open(url, "_blank", "noopener,noreferrer");
+        irPara(url);
 
     }
 
     if(!navigator.geolocation){
 
-        window.open(hrefOriginal, "_blank", "noopener,noreferrer");
+        irPara(hrefOriginal);
 
         return;
 
@@ -794,6 +832,23 @@ btnGuincho?.addEventListener("click", ()=>{
 
         }
 
+        /* Mesma correção do botão do WhatsApp: abre a aba AGORA,
+           de forma síncrona no clique, e só preenche o endereço
+           dela quando a localização responder. Evita o bloqueio
+           de pop-up assíncrono do Safari no iOS. */
+
+        let janela;
+
+        try{
+
+            janela = window.open("", "_blank", "noopener,noreferrer");
+
+        }catch(erro){
+
+            janela = null;
+
+        }
+
         btnRota.disabled = true;
 
         btnRota.textContent = "Buscando sua localização...";
@@ -811,7 +866,15 @@ btnGuincho?.addEventListener("click", ()=>{
                 const url =
                     `https://www.google.com/maps/dir/?api=1&origin=${origem}&destination=${destino}&travelmode=driving`;
 
-                window.open(url, "_blank", "noopener,noreferrer");
+                if(janela && !janela.closed){
+
+                    janela.location.href = url;
+
+                }else{
+
+                    window.location.href = url;
+
+                }
 
                 mostrarStatus("Pronto! Abrimos a rota até nós no Google Maps.", "is-success");
 
@@ -822,6 +885,16 @@ btnGuincho?.addEventListener("click", ()=>{
             },
 
             ()=>{
+
+                /* Sem localização não dá pra calcular rota nenhuma
+                   — fecha a aba em branco que tínhamos aberto, pra
+                   não deixar uma aba vazia solta pro usuário. */
+
+                if(janela && !janela.closed){
+
+                    janela.close();
+
+                }
 
                 mostrarStatus("Não conseguimos acessar sua localização. Verifique a permissão do navegador e tente de novo.", "is-error");
 
