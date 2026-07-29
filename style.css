@@ -1109,7 +1109,10 @@ body.menu-open{
     position:relative;
     display:flex;
     align-items:center;
-    min-height:100vh;
+    min-height:100vh; /* fallback para navegadores sem suporte a svh */
+    min-height:100svh; /* iOS Safari: evita que a barra de endereço
+                           empurre o botão principal pra fora da tela
+                           no primeiro carregamento */
     padding-top:calc(var(--header-height) + 40px);
     overflow:hidden;
     isolation:isolate;
@@ -1994,6 +1997,55 @@ img{
 /* ===================================================================
    36. WHATSAPP FLOAT
 =================================================================== */
+
+/* ===================================================================
+   40c. AVISO DE LOCALIZAÇÃO (toast)
+   Aparece ao clicar em "Chamar no WhatsApp", pra pessoa perceber
+   que o navegador vai pedir permissão de localização — sem isso,
+   o pedido do navegador passa despercebido e a mensagem acaba
+   indo pro WhatsApp sem a localização.
+=================================================================== */
+
+.location-toast{
+
+    position:fixed;
+    left:50%;
+    bottom:24px;
+    transform:translate(-50%,140%);
+    z-index:1300;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    max-width:min(92vw,420px);
+    padding:14px 18px;
+    background:#111827;
+    color:#FFFFFF;
+    border-radius:var(--radius-lg,14px);
+    box-shadow:0 20px 45px rgba(0,0,0,.28);
+    font-size:.9rem;
+    font-weight:600;
+    line-height:1.4;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .3s ease, transform .3s ease;
+
+}
+
+.location-toast.show{
+
+    opacity:1;
+    transform:translate(-50%,0);
+
+}
+
+.location-toast svg{
+
+    flex-shrink:0;
+    width:20px;
+    height:20px;
+    stroke:var(--color-primary-light,#FDBA74);
+
+}
 
 .whatsapp-float{
 

@@ -99,7 +99,7 @@ function closeMenu(){
 
 menuToggle?.addEventListener("click",()=>{
 
-    if(mobileMenu.classList.contains("active")){
+    if(mobileMenu?.classList.contains("active")){
 
         closeMenu();
 
@@ -221,15 +221,26 @@ navLinks.forEach(link=>{
 
 /* ==========================================================
    SCROLL EVENTS
+
+   Guardamos a função em uma variável (em vez de passar direto
+   uma função anônima pro addEventListener) só pra ser possível
+   removê-la de verdade mais abaixo, quando trocamos pela versão
+   com debounce. Sem isso, o removeEventListener não encontra
+   a função (precisa ser a mesma referência) e o listener antigo
+   fica rodando pra sempre, disparando em CADA pixel de scroll,
+   além do novo — desperdiçando processamento à toa, principalmente
+   em celulares mais fracos.
 ========================================================== */
 
-window.addEventListener("scroll",()=>{
+function handleScrollInicial(){
 
     updateHeader();
 
     updateBackToTop();
 
-});
+}
+
+window.addEventListener("scroll",handleScrollInicial);
 
 /* ==========================================================
    LOAD
@@ -340,9 +351,7 @@ const optimizedScroll = debounce(()=>{
 
 },5);
 
-window.removeEventListener("scroll",updateHeader);
-
-window.removeEventListener("scroll",updateBackToTop);
+window.removeEventListener("scroll",handleScrollInicial);
 
 window.addEventListener("scroll",optimizedScroll);
 
@@ -669,25 +678,149 @@ https://www.google.com/maps?q=${latitude},${longitude}`
 
 }
 
+/* ==========================================================
+   AVISO DE LOCALIZAÇÃO (toast)
+
+   Sem isso, o pedido de permissão do navegador é discreto
+   (aparece perto da barra de endereço) e passa despercebido
+   — a pessoa nem vê que precisa aceitar, o tempo esgota (ou
+   ela clica fora sem querer) e a mensagem vai pro WhatsApp
+   sem a localização. Esse aviso deixa claro o que está
+   acontecendo enquanto o navegador pergunta.
+========================================================== */
+
+let locationToastEl = null;
+let locationToastTimer = null;
+
+function mostrarAvisoLocalizacao(){
+
+    if(!locationToastEl){
+
+        locationToastEl = document.createElement("div");
+        locationToastEl.className = "location-toast";
+        locationToastEl.setAttribute("role","status");
+        locationToastEl.setAttribute("aria-live","polite");
+        locationToastEl.innerHTML =
+            `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 21s-7-6.1-7-11a7 7 0 0114 0c0 4.9-7 11-7 11z"/>
+                <circle cx="12" cy="10" r="2.5"/>
+            </svg>
+            <span>Seu navegador vai pedir sua localização — aceite pra já mandarmos ela pronta no WhatsApp.</span>`;
+        document.body.appendChild(locationToastEl);
+
+    }
+
+    clearTimeout(locationToastTimer);
+
+    /* Reabre no próximo frame pra garantir a transição, caso o
+       toast já estivesse visível (clique duplo rápido) */
+
+    requestAnimationFrame(()=>{
+
+        locationToastEl.classList.add("show");
+
+    });
+
+    /* Se por algum motivo a geolocalização nunca chamar de volta,
+       este limite garante que o aviso não fique preso na tela */
+
+    locationToastTimer = setTimeout(esconderAvisoLocalizacao, 9000);
+
+}
+
+function esconderAvisoLocalizacao(){
+
+    clearTimeout(locationToastTimer);
+
+    locationToastEl?.classList.remove("show");
+
+}
+
+/* ==========================================================
+   DETECÇÃO iOS/Safari
+
+   Só iOS (qualquer navegador, porque no iOS TODOS usam o motor
+   Safari/WebKit por exigência da Apple) e o Safari no Mac têm o
+   bloqueio agressivo de pop-up assíncrono que exige abrir a aba
+   ANTES da geolocalização responder.
+
+   Em Chrome/Firefox/Edge (PC ou Android), abrir a aba antes tira
+   o foco da aba original — e é justamente na aba original que o
+   navegador mostra o aviso de permissão de localização. Resultado:
+   a pessoa não vê o aviso, porque está olhando pra aba errada.
+   Por isso só usamos o truque da aba antecipada nos navegadores
+   que realmente precisam dele.
+========================================================== */
+
+function precisaAbrirAbaAntes(){
+
+    const ua = navigator.userAgent || "";
+
+    const ehIOS =
+        /iP(hone|od|ad)/.test(ua) ||
+        /* iPadOS 13+ se identifica como "MacIntel", então checa
+           também suporte a touch pra diferenciar de um Mac de verdade */
+        (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+
+    const ehSafari =
+        /^((?!chrome|android|crios|fxios|edgios).)*safari/i.test(ua);
+
+    return ehIOS || ehSafari;
+
+}
+
 function abrirWhatsappComLocalizacao(numero, hrefOriginal){
 
     /* IMPORTANTE (compatibilidade iOS/Safari):
        A aba PRECISA ser aberta aqui, de forma síncrona, ainda
-       dentro do clique do usuário. Se abrirmos a aba só depois
+       dentro do clique do usuário — mas SÓ nos navegadores que
+       precisam disso (iOS/Safari). Se abrirmos a aba só depois
        que a geolocalização responder (assíncrono), o Safari no
        iPhone bloqueia o window.open() silenciosamente — o botão
-       parece não fazer nada. Por isso abrimos a aba em branco
-       AGORA e só preenchemos o endereço dela depois. */
+       parece não fazer nada. Por isso, só nesses navegadores,
+       abrimos a aba em branco AGORA e preenchemos o endereço
+       dela depois.
 
-    let janela;
+       Em todos os outros navegadores (Chrome/Firefox/Edge, PC ou
+       Android) NÃO fazemos isso, porque tirar o foco da aba
+       original agora — antes mesmo de perguntar a localização —
+       esconderia o aviso de permissão da pessoa (bug real que já
+       aconteceu). Esses navegadores toleram bem chamar
+       window.open() um pouco depois do clique, então abrimos a
+       aba só quando a localização já respondeu.
 
-    try{
+       IMPORTANTE #2: aqui NÃO podemos passar "noopener" —
+       quando "noopener" é usado, o navegador sempre retorna
+       null no window.open(), e a gente perde justamente a
+       referência que precisa pra preencher o endereço da aba
+       mais tarde (isso já causou um bug: abria uma aba em
+       branco solta E navegava a aba atual, ao mesmo tempo). */
 
-        janela = window.open("", "_blank", "noopener,noreferrer");
+    const precisaProtecaoIOS = precisaAbrirAbaAntes();
 
-    }catch(erro){
+    let janela = null;
 
-        janela = null;
+    if(precisaProtecaoIOS){
+
+        try{
+
+            janela = window.open("", "_blank");
+
+            if(janela){
+
+                /* Remove o acesso da aba nova de volta pra esta
+                   página (mesmo efeito de segurança do "noopener",
+                   só que sem perder a referência que precisamos) */
+
+                janela.opener = null;
+
+            }
+
+        }catch(erro){
+
+            janela = null;
+
+        }
 
     }
 
@@ -697,13 +830,21 @@ function abrirWhatsappComLocalizacao(numero, hrefOriginal){
 
             janela.location.href = url;
 
-        }else{
+        }else if(precisaProtecaoIOS){
 
-            /* Pop-up foi bloqueado mesmo assim: como último
-               recurso, navega na própria aba pra o botão nunca
-               ficar sem resposta nenhuma. */
+            /* Pop-up foi bloqueado mesmo assim no iOS/Safari: como
+               último recurso, navega na própria aba pra o botão
+               nunca ficar sem resposta nenhuma. */
 
             window.location.href = url;
+
+        }else{
+
+            /* Chrome/Firefox/Edge: abre a aba só agora — a pessoa
+               já viu e respondeu o aviso de permissão na aba
+               original, sem nenhum foco roubado antes da hora. */
+
+            window.open(url, "_blank", "noopener,noreferrer");
 
         }
 
@@ -727,9 +868,13 @@ function abrirWhatsappComLocalizacao(numero, hrefOriginal){
 
     }
 
+    mostrarAvisoLocalizacao();
+
     navigator.geolocation.getCurrentPosition(
 
         posicao=>{
+
+            esconderAvisoLocalizacao();
 
             abrir(posicao.coords.latitude, posicao.coords.longitude);
 
@@ -740,6 +885,8 @@ function abrirWhatsappComLocalizacao(numero, hrefOriginal){
             /* Localização negada/indisponível: abre o WhatsApp
                mesmo assim, só sem a localização */
 
+            esconderAvisoLocalizacao();
+
             abrir();
 
         },
@@ -748,7 +895,7 @@ function abrirWhatsappComLocalizacao(numero, hrefOriginal){
 
             enableHighAccuracy:true,
 
-            timeout:8000,
+            timeout:10000,
 
             maximumAge:0
 
@@ -832,20 +979,35 @@ btnGuincho?.addEventListener("click", ()=>{
 
         }
 
-        /* Mesma correção do botão do WhatsApp: abre a aba AGORA,
-           de forma síncrona no clique, e só preenche o endereço
-           dela quando a localização responder. Evita o bloqueio
-           de pop-up assíncrono do Safari no iOS. */
+        /* Mesma correção do botão do WhatsApp: só em iOS/Safari
+           abrimos a aba ANTES da localização responder (pra não
+           esbarrar no bloqueio de pop-up assíncrono deles). Em
+           Chrome/Firefox/Edge isso é evitado de propósito, porque
+           tirar o foco da aba original agora esconderia o aviso
+           de permissão de localização da pessoa (bug real que já
+           aconteceu no PC). */
 
-        let janela;
+        const precisaProtecaoIOS = precisaAbrirAbaAntes();
 
-        try{
+        let janela = null;
 
-            janela = window.open("", "_blank", "noopener,noreferrer");
+        if(precisaProtecaoIOS){
 
-        }catch(erro){
+            try{
 
-            janela = null;
+                janela = window.open("", "_blank");
+
+                if(janela){
+
+                    janela.opener = null;
+
+                }
+
+            }catch(erro){
+
+                janela = null;
+
+            }
 
         }
 
@@ -870,9 +1032,13 @@ btnGuincho?.addEventListener("click", ()=>{
 
                     janela.location.href = url;
 
-                }else{
+                }else if(precisaProtecaoIOS){
 
                     window.location.href = url;
+
+                }else{
+
+                    window.open(url, "_blank", "noopener,noreferrer");
 
                 }
 
