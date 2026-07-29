@@ -480,6 +480,12 @@ body.menu-open{
 
     height:100%;
 
+    /* width:100% evita o body "encolher" quando o JS aplica
+       position:fixed nele — sem isso, o conteúdo horizontal
+       recolhe e pode gerar um leve deslocamento lateral */
+
+    width:100%;
+
 }
 
 .hidden{

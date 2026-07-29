@@ -63,13 +63,61 @@ function updateHeader(){
 
 /* ==========================================================
    MENU MOBILE
+
+   CORREÇÃO DO SCROLL DE FUNDO NO iOS:
+   Só "overflow:hidden" no body (feito via CSS) não é suficiente
+   no Safari do iPhone — ele tem um bug conhecido em que o dedo
+   ainda consegue arrastar e "balançar" o conteúdo por trás do
+   menu aberto, mesmo com overflow escondido.
+
+   A técnica que realmente funciona em todos os navegadores é
+   fixar o body na posição exata em que a pessoa estava (usando
+   position:fixed com um deslocamento negativo), e restaurar essa
+   posição exata quando o menu fecha. É isso que travaScroll()/
+   destravaScroll() fazem abaixo.
 ========================================================== */
+
+let posicaoScrollAntesDoMenu = 0;
+
+function travaScroll(){
+
+    posicaoScrollAntesDoMenu = window.scrollY || window.pageYOffset || 0;
+
+    body.style.position = "fixed";
+
+    body.style.top = `-${posicaoScrollAntesDoMenu}px`;
+
+    body.style.left = "0";
+
+    body.style.right = "0";
+
+}
+
+function destravaScroll(){
+
+    body.style.position = "";
+
+    body.style.top = "";
+
+    body.style.left = "";
+
+    body.style.right = "";
+
+    /* Sem "smooth" aqui de propósito: precisa voltar instantâneo
+       pro exato lugar de onde a pessoa saiu, senão fica um pulo
+       visível de rolagem */
+
+    window.scrollTo(0, posicaoScrollAntesDoMenu);
+
+}
 
 function openMenu(){
 
     document.documentElement.classList.add("menu-open");
 
     body.classList.add("menu-open");
+
+    travaScroll();
 
     menuToggle?.classList.add("active");
 
@@ -86,6 +134,8 @@ function closeMenu(){
     document.documentElement.classList.remove("menu-open");
 
     body.classList.remove("menu-open");
+
+    destravaScroll();
 
     menuToggle?.classList.remove("active");
 
