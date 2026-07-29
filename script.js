@@ -802,103 +802,29 @@ function esconderAvisoLocalizacao(){
    que realmente precisam dele.
 ========================================================== */
 
-function precisaAbrirAbaAntes(){
-
-    const ua = navigator.userAgent || "";
-
-    const ehIOS =
-        /iP(hone|od|ad)/.test(ua) ||
-        /* iPadOS 13+ se identifica como "MacIntel", então checa
-           também suporte a touch pra diferenciar de um Mac de verdade */
-        (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
-
-    const ehSafari =
-        /^((?!chrome|android|crios|fxios|edgios).)*safari/i.test(ua);
-
-    return ehIOS || ehSafari;
-
-}
-
 function abrirWhatsappComLocalizacao(numero, hrefOriginal){
 
-    /* IMPORTANTE (compatibilidade iOS/Safari):
-       A aba PRECISA ser aberta aqui, de forma síncrona, ainda
-       dentro do clique do usuário — mas SÓ nos navegadores que
-       precisam disso (iOS/Safari). Se abrirmos a aba só depois
-       que a geolocalização responder (assíncrono), o Safari no
-       iPhone bloqueia o window.open() silenciosamente — o botão
-       parece não fazer nada. Por isso, só nesses navegadores,
-       abrimos a aba em branco AGORA e preenchemos o endereço
-       dela depois.
+    /* SOLUÇÃO FINAL (mais simples e a que realmente funciona em
+       todas as plataformas):
 
-       Em todos os outros navegadores (Chrome/Firefox/Edge, PC ou
-       Android) NÃO fazemos isso, porque tirar o foco da aba
-       original agora — antes mesmo de perguntar a localização —
-       esconderia o aviso de permissão da pessoa (bug real que já
-       aconteceu). Esses navegadores toleram bem chamar
-       window.open() um pouco depois do clique, então abrimos a
-       aba só quando a localização já respondeu.
+       Em vez de abrir uma aba/janela nova com window.open() —
+       que é exatamente o tipo de coisa que todo bloqueador de
+       pop-up de todo navegador vigia, e no iPhone especificamente
+       chegava a impedir a própria localização de ser pedida
+       (a aba nova ficava em segundo plano, o Safari "pausava"
+       aquela aba, e o pedido de localização nunca era processado
+       — por isso aparecia uma tela em branco/about:blank e a
+       localização nunca era solicitada de verdade) — a gente
+       simplesmente troca o endereço da PRÓPRIA aba assim que a
+       localização responder.
 
-       IMPORTANTE #2: aqui NÃO podemos passar "noopener" —
-       quando "noopener" é usado, o navegador sempre retorna
-       null no window.open(), e a gente perde justamente a
-       referência que precisa pra preencher o endereço da aba
-       mais tarde (isso já causou um bug: abria uma aba em
-       branco solta E navegava a aba atual, ao mesmo tempo). */
-
-    const precisaProtecaoIOS = precisaAbrirAbaAntes();
-
-    let janela = null;
-
-    if(precisaProtecaoIOS){
-
-        try{
-
-            janela = window.open("", "_blank");
-
-            if(janela){
-
-                /* Remove o acesso da aba nova de volta pra esta
-                   página (mesmo efeito de segurança do "noopener",
-                   só que sem perder a referência que precisamos) */
-
-                janela.opener = null;
-
-            }
-
-        }catch(erro){
-
-            janela = null;
-
-        }
-
-    }
-
-    function irPara(url){
-
-        if(janela && !janela.closed){
-
-            janela.location.href = url;
-
-        }else if(precisaProtecaoIOS){
-
-            /* Pop-up foi bloqueado mesmo assim no iOS/Safari: como
-               último recurso, navega na própria aba pra o botão
-               nunca ficar sem resposta nenhuma. */
-
-            window.location.href = url;
-
-        }else{
-
-            /* Chrome/Firefox/Edge: abre a aba só agora — a pessoa
-               já viu e respondeu o aviso de permissão na aba
-               original, sem nenhum foco roubado antes da hora. */
-
-            window.open(url, "_blank", "noopener,noreferrer");
-
-        }
-
-    }
+       Trocar o endereço da aba atual (window.location.href) NUNCA
+       é bloqueado por bloqueador de pop-up nenhum, em nenhum
+       navegador — porque não é uma janela nova, é só navegar,
+       igual clicar num link comum. Isso funciona de forma
+       idêntica e confiável no iPhone, Android, PC, sem precisar
+       de nenhum truque, nenhuma detecção de navegador, nenhuma
+       aba escondida. */
 
     function abrir(latitude, longitude){
 
@@ -906,13 +832,13 @@ function abrirWhatsappComLocalizacao(numero, hrefOriginal){
 
         const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`;
 
-        irPara(url);
+        window.location.href = url;
 
     }
 
     if(!navigator.geolocation){
 
-        irPara(hrefOriginal);
+        window.location.href = hrefOriginal;
 
         return;
 
@@ -1029,37 +955,12 @@ btnGuincho?.addEventListener("click", ()=>{
 
         }
 
-        /* Mesma correção do botão do WhatsApp: só em iOS/Safari
-           abrimos a aba ANTES da localização responder (pra não
-           esbarrar no bloqueio de pop-up assíncrono deles). Em
-           Chrome/Firefox/Edge isso é evitado de propósito, porque
-           tirar o foco da aba original agora esconderia o aviso
-           de permissão de localização da pessoa (bug real que já
-           aconteceu no PC). */
-
-        const precisaProtecaoIOS = precisaAbrirAbaAntes();
-
-        let janela = null;
-
-        if(precisaProtecaoIOS){
-
-            try{
-
-                janela = window.open("", "_blank");
-
-                if(janela){
-
-                    janela.opener = null;
-
-                }
-
-            }catch(erro){
-
-                janela = null;
-
-            }
-
-        }
+        /* Mesma solução do botão do WhatsApp: navega a própria aba
+           assim que a localização responder, sem abrir janela/aba
+           nova nenhuma. Isso evita qualquer bloqueio de pop-up e,
+           principalmente no iPhone, evita o bug em que abrir uma
+           aba nova antes fazia o pedido de localização nunca ser
+           processado de verdade (ficava preso numa tela em branco). */
 
         btnRota.disabled = true;
 
@@ -1078,19 +979,7 @@ btnGuincho?.addEventListener("click", ()=>{
                 const url =
                     `https://www.google.com/maps/dir/?api=1&origin=${origem}&destination=${destino}&travelmode=driving`;
 
-                if(janela && !janela.closed){
-
-                    janela.location.href = url;
-
-                }else if(precisaProtecaoIOS){
-
-                    window.location.href = url;
-
-                }else{
-
-                    window.open(url, "_blank", "noopener,noreferrer");
-
-                }
+                window.location.href = url;
 
                 mostrarStatus("Pronto! Abrimos a rota até nós no Google Maps.", "is-success");
 
@@ -1101,16 +990,6 @@ btnGuincho?.addEventListener("click", ()=>{
             },
 
             ()=>{
-
-                /* Sem localização não dá pra calcular rota nenhuma
-                   — fecha a aba em branco que tínhamos aberto, pra
-                   não deixar uma aba vazia solta pro usuário. */
-
-                if(janela && !janela.closed){
-
-                    janela.close();
-
-                }
 
                 mostrarStatus("Não conseguimos acessar sua localização. Verifique a permissão do navegador e tente de novo.", "is-error");
 
